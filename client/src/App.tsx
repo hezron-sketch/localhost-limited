@@ -19,6 +19,8 @@ import Services from "./pages/Services";
 import Partnerships from "./pages/Partnerships";
 import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/AdminLogin";
+import AdminPanel from "./pages/AdminPanel";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -28,6 +30,8 @@ function Router() {
       <Route path="/services" component={Services} />
       <Route path="/partnerships" component={Partnerships} />
       <Route path="/contact" component={Contact} />
+      <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/panel" component={AdminPanel} />
       <Route path="/admin/submissions" component={AdminDashboard} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
