@@ -1,11 +1,20 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
-import { createContactSubmission } from "./db";
+import { createContactSubmission, listContactSubmissions, updateContactSubmissionStatus, deleteContactSubmission, getContactSubmissionStats, getContactSubmissionById } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { sendContactConfirmationEmail, sendContactNotificationEmail } from "./email";
+import { TRPCError } from "@trpc/server";
+
+// Helper to ensure user is admin
+const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (ctx.user?.role !== "admin") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+  }
+  return next({ ctx });
+});
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -64,8 +73,68 @@ export const appRouter = router({
           };
         } catch (error) {
           console.error("[Contact] Failed to submit form:", error);
-          throw new Error("Failed to submit contact form. Please try again later.");
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to submit contact form. Please try again later.",
+          });
         }
+      }),
+
+    // Admin procedures
+    list: adminProcedure
+      .input(
+        z.object({
+          limit: z.number().min(1).max(100).default(50),
+          offset: z.number().min(0).default(0),
+          status: z.enum(["new", "reviewed", "replied", "archived"]).optional(),
+        })
+      )
+      .query(async ({ input }) => {
+        const result = await listContactSubmissions(input.limit, input.offset, input.status);
+        return result;
+      }),
+
+    get: adminProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .query(async ({ input }) => {
+        const submission = await getContactSubmissionById(input.id);
+        if (!submission) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Submission not found" });
+        }
+        return submission;
+      }),
+
+    stats: adminProcedure.query(async () => {
+      return await getContactSubmissionStats();
+    }),
+
+    updateStatus: adminProcedure
+      .input(
+        z.object({
+          id: z.number().int().positive(),
+          status: z.enum(["new", "reviewed", "replied", "archived"]),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const submission = await getContactSubmissionById(input.id);
+        if (!submission) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Submission not found" });
+        }
+
+        await updateContactSubmissionStatus(input.id, input.status);
+        return { success: true, message: "Status updated successfully" };
+      }),
+
+    delete: adminProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input }) => {
+        const submission = await getContactSubmissionById(input.id);
+        if (!submission) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Submission not found" });
+        }
+
+        await deleteContactSubmission(input.id);
+        return { success: true, message: "Submission deleted successfully" };
       }),
   }),
 

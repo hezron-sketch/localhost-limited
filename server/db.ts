@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, contactSubmissions, InsertContactSubmission } from "../drizzle/schema";
+import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -114,6 +114,117 @@ export async function getContactSubmissionById(id: number) {
     .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
+}
+
+export async function listContactSubmissions(
+  limit: number = 50,
+  offset: number = 0,
+  status?: string
+) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list contact submissions: database not available");
+    return { submissions: [], total: 0 };
+  }
+
+  try {
+    const whereConditions = status ? and(eq(contactSubmissions.status, status as any)) : undefined;
+
+    const [submissions, countResult] = await Promise.all([
+      db
+        .select()
+        .from(contactSubmissions)
+        .where(whereConditions)
+        .orderBy(desc(contactSubmissions.submittedAt))
+        .limit(limit)
+        .offset(offset),
+      db
+        .select({ count: db.$count(contactSubmissions) })
+        .from(contactSubmissions)
+        .where(whereConditions),
+    ]);
+
+    const total = countResult[0]?.count || 0;
+    return { submissions, total };
+  } catch (error) {
+    console.error("[Database] Failed to list contact submissions:", error);
+    return { submissions: [], total: 0 };
+  }
+}
+
+export async function updateContactSubmissionStatus(
+  id: number,
+  status: "new" | "reviewed" | "replied" | "archived"
+) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update contact submission: database not available");
+    throw new Error("Database connection failed");
+  }
+
+  try {
+    await db
+      .update(contactSubmissions)
+      .set({ status, updatedAt: new Date() })
+      .where(eq(contactSubmissions.id, id));
+
+    return { success: true };
+  } catch (error) {
+    console.error("[Database] Failed to update contact submission:", error);
+    throw error;
+  }
+}
+
+export async function deleteContactSubmission(id: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete contact submission: database not available");
+    throw new Error("Database connection failed");
+  }
+
+  try {
+    await db.delete(contactSubmissions).where(eq(contactSubmissions.id, id));
+    return { success: true };
+  } catch (error) {
+    console.error("[Database] Failed to delete contact submission:", error);
+    throw error;
+  }
+}
+
+export async function getContactSubmissionStats() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get contact submission stats: database not available");
+    return { total: 0, new: 0, reviewed: 0, replied: 0, archived: 0 };
+  }
+
+  try {
+    const stats = await db
+      .select({
+        status: contactSubmissions.status,
+        count: db.$count(contactSubmissions),
+      })
+      .from(contactSubmissions)
+      .groupBy(contactSubmissions.status);
+
+    const result = { total: 0, new: 0, reviewed: 0, replied: 0, archived: 0 };
+    let total = 0;
+
+    stats.forEach((stat) => {
+      const count = stat.count || 0;
+      total += count;
+      if (stat.status === "new") result.new = count;
+      else if (stat.status === "reviewed") result.reviewed = count;
+      else if (stat.status === "replied") result.replied = count;
+      else if (stat.status === "archived") result.archived = count;
+    });
+
+    result.total = total;
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to get contact submission stats:", error);
+    return { total: 0, new: 0, reviewed: 0, replied: 0, archived: 0 };
+  }
 }
 
 // TODO: add feature queries here as your schema grows.
