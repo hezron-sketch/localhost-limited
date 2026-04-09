@@ -10,7 +10,7 @@
  * - Real-time statistics
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
@@ -113,6 +113,12 @@ export default function AdminDashboard() {
   });
 
   // Redirect if not admin
+  useEffect(() => {
+    if (!authLoading && (!user || user.role !== "admin")) {
+      navigate("/");
+    }
+  }, [user, authLoading, navigate]);
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-[#0D1B2A] flex items-center justify-center">
@@ -122,7 +128,6 @@ export default function AdminDashboard() {
   }
 
   if (!user || user.role !== "admin") {
-    navigate("/");
     return null;
   }
 
