@@ -5,10 +5,13 @@
  * - Green focus states and submit button
  * - Form validation with error states
  * - Success state with animation
+ * - Integrated with tRPC backend for form submission
  */
 
 import { useState } from "react";
-import { Send, CheckCircle, Loader2 } from "lucide-react";
+import { Send, CheckCircle, Loader2, AlertCircle } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 interface FormData {
   name: string;
@@ -31,8 +34,22 @@ export default function ContactForm() {
     message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  // tRPC mutation for contact form submission
+  const submitContactMutation = trpc.contact.submit.useMutation({
+    onSuccess: () => {
+      setIsSuccess(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setApiError(null);
+      toast.success("Message sent successfully! We'll get back to you soon.");
+    },
+    onError: (error) => {
+      setApiError(error.message || "Failed to send message. Please try again.");
+      toast.error(error.message || "Failed to send message. Please try again.");
+    },
+  });
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -51,12 +68,15 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+
+    setApiError(null);
+
+    // Submit to backend via tRPC
+    await submitContactMutation.mutateAsync({
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -103,6 +123,14 @@ export default function ContactForm() {
       aria-label="Contact form"
       className="space-y-5"
     >
+      {/* API Error Alert */}
+      {apiError && (
+        <div className="flex items-start gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/30">
+          <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 shrink-0" aria-hidden="true" />
+          <p className="text-red-300 text-sm">{apiError}</p>
+        </div>
+      )}
+
       {/* Name + Email Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
@@ -120,6 +148,7 @@ export default function ContactForm() {
             aria-required="true"
             aria-describedby={errors.name ? "name-error" : undefined}
             autoComplete="name"
+            disabled={submitContactMutation.isPending}
           />
           {errors.name && (
             <p id="name-error" className="mt-1.5 text-xs text-red-400" role="alert">
@@ -142,6 +171,7 @@ export default function ContactForm() {
             aria-required="true"
             aria-describedby={errors.email ? "email-error" : undefined}
             autoComplete="email"
+            disabled={submitContactMutation.isPending}
           />
           {errors.email && (
             <p id="email-error" className="mt-1.5 text-xs text-red-400" role="alert">
@@ -163,6 +193,7 @@ export default function ContactForm() {
           onChange={handleChange}
           className={`${inputClass()} appearance-none`}
           aria-label="Select a subject"
+          disabled={submitContactMutation.isPending}
         >
           <option value="" className="bg-[#0D1B2A]">Select a subject...</option>
           <option value="marketing" className="bg-[#0D1B2A]">Marketing Services</option>
@@ -188,6 +219,7 @@ export default function ContactForm() {
           className={`${inputClass(errors.message)} resize-none`}
           aria-required="true"
           aria-describedby={errors.message ? "message-error" : undefined}
+          disabled={submitContactMutation.isPending}
         />
         {errors.message && (
           <p id="message-error" className="mt-1.5 text-xs text-red-400" role="alert">
@@ -199,11 +231,11 @@ export default function ContactForm() {
       {/* Submit */}
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={submitContactMutation.isPending}
         className="btn-green w-full py-3.5 text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
-        aria-label={isSubmitting ? "Sending message..." : "Send message"}
+        aria-label={submitContactMutation.isPending ? "Sending message..." : "Send message"}
       >
-        {isSubmitting ? (
+        {submitContactMutation.isPending ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
             Sending...

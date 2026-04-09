@@ -18,8 +18,8 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import Partnerships from "./pages/Partnerships";
 import Contact from "./pages/Contact";
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path="/" component={Home} />

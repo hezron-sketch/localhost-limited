@@ -11,6 +11,7 @@
  */
 
 import { Link } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
 import {
   ArrowRight,
   TrendingUp,
@@ -90,6 +91,10 @@ const whyUs = [
 ];
 
 export default function Home() {
+  // The userAuth hooks provides authentication state
+  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   return (
     <PageLayout
       title="Home"
