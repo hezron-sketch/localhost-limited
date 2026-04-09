@@ -112,6 +112,20 @@ export default function AdminDashboard() {
     },
   });
 
+  // Prepare data (must be before conditional returns)
+  const submissions = submissionsData?.submissions || [];
+  const total = submissionsData?.total || 0;
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+
+  // Memoize sorted submissions (must be before conditional returns)
+  const sortedSubmissions = useMemo(() => {
+    const sorted = [...submissions];
+    if (sortBy === "name") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return sorted;
+  }, [submissions, sortBy]);
+
   // Redirect if not admin
   useEffect(() => {
     if (!authLoading && (!user || user.role !== "admin")) {
@@ -130,18 +144,6 @@ export default function AdminDashboard() {
   if (!user || user.role !== "admin") {
     return null;
   }
-
-  const submissions = submissionsData?.submissions || [];
-  const total = submissionsData?.total || 0;
-  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-
-  const sortedSubmissions = useMemo(() => {
-    const sorted = [...submissions];
-    if (sortBy === "name") {
-      sorted.sort((a, b) => a.name.localeCompare(b.name));
-    }
-    return sorted;
-  }, [submissions, sortBy]);
 
   return (
     <div className="min-h-screen bg-[#0D1B2A]">
