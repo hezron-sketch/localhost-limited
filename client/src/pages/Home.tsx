@@ -28,6 +28,8 @@ import PageLayout from "@/components/PageLayout";
 import ServiceCard from "@/components/ServiceCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import AnimatedSection from "@/components/AnimatedSection";
+import Slider3D from "@/components/Slider3D";
+import Card3D from "@/components/Card3D";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/hero-bg-hMAJanvygtVwYcoE3qDYBQ.webp";
 
@@ -301,10 +303,38 @@ export default function Home() {
             </div>
           </AnimatedSection>
 
+          <div className="h-96 mb-12">
+            <Slider3D
+              items={testimonials.map((t) => ({
+                id: t.name,
+                title: t.name,
+                description: t.quote,
+              }))}
+              autoPlay={true}
+              autoPlayInterval={6000}
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <AnimatedSection key={t.name} delay={i * 100}>
-                <TestimonialCard {...t} />
+                <Card3D
+                  title={t.name}
+                  description={t.quote}
+                  gradient="from-blue-500/20 to-blue-500/5"
+                >
+                  <div className="flex items-center justify-between mt-4">
+                    <div>
+                      <p className="text-white/70 text-xs font-medium">{t.role}</p>
+                      <p className="text-white/50 text-xs">{t.company}</p>
+                    </div>
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: t.rating }).map((_: unknown, i: number) => (
+                        <span key={i} className="text-[#22C55E] text-sm">★</span>
+                      ))}
+                    </div>
+                  </div>
+                </Card3D>
               </AnimatedSection>
             ))}
           </div>

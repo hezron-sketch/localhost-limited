@@ -25,10 +25,12 @@ import {
   Users,
   Network,
   ClipboardList,
+  Check,
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import ServiceCard from "@/components/ServiceCard";
 import AnimatedSection from "@/components/AnimatedSection";
+import Card3D from "@/components/Card3D";
 
 const SERVICES_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/services-bg-8Q3voRTxHkWeXjcMVBCnue.webp";
 
@@ -235,11 +237,28 @@ export default function Services() {
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            {marketingServices.map((service, i) => (
-              <AnimatedSection key={service.title} delay={i * 100}>
-                <ServiceCard {...service} className="h-full" />
-              </AnimatedSection>
-            ))}
+            {marketingServices.map((service, i) => {
+              const Icon = service.icon;
+              return (
+                <AnimatedSection key={service.title} delay={i * 100}>
+                  <Card3D
+                    title={service.title}
+                    description={service.description}
+                    icon={<Icon className="w-8 h-8" />}
+                    gradient="from-purple-500/20 to-purple-500/5"
+                  >
+                    <ul className="space-y-2 mt-4">
+                      {service.benefits.slice(0, 2).map((benefit: string) => (
+                        <li key={benefit} className="flex items-start gap-2 text-xs text-white/60">
+                          <CheckCircle className="w-3 h-3 text-[#22C55E] mt-0.5 flex-shrink-0" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Card3D>
+                </AnimatedSection>
+              );
+            })}
           </div>
 
           {/* Marketing Benefits */}
