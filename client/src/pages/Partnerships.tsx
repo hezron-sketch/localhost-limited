@@ -26,7 +26,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
-import PartnerGrid from "@/components/PartnerGrid";
+import PartnerLogoGrid from "@/components/PartnerLogoGrid";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const PARTNERSHIPS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/partnerships-bg-kUB5k3Fk7foCge3PAfYbB2.webp";
@@ -307,7 +307,7 @@ export default function Partnerships() {
             </div>
           </AnimatedSection>
           <AnimatedSection delay={100}>
-            <PartnerGrid />
+            <PartnerLogoGrid partners={partnerLogos} />
           </AnimatedSection>
         </div>
       </section>
