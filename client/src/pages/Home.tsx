@@ -30,6 +30,7 @@ import TestimonialCard from "@/components/TestimonialCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import Slider3D from "@/components/Slider3D";
 import Card3D from "@/components/Card3D";
+import ScrollReveal, { ScrollRevealGroup } from "@/components/ScrollReveal";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/hero-bg-hMAJanvygtVwYcoE3qDYBQ.webp";
 
@@ -179,22 +180,20 @@ export default function Home() {
       {/* ─── Stats Section ─── */}
       <section className="py-16 bg-[#060E1A] border-y border-white/5" aria-label="Company statistics">
         <div className="container mx-auto">
-          <AnimatedSection>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, i) => (
-                <div key={i} className="text-center">
-                  <p
-                    className="text-3xl md:text-4xl font-extrabold gradient-text mb-1"
-                    style={{ fontFamily: "'Syne', sans-serif" }}
-                    aria-label={`${stat.value} ${stat.label}`}
-                  >
-                    {stat.value}
-                  </p>
-                  <p className="text-white/50 text-sm">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
+          <ScrollRevealGroup staggerDelay={0.15} className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, i) => (
+              <div key={i} className="text-center">
+                <p
+                  className="text-3xl md:text-4xl font-extrabold gradient-text mb-1"
+                  style={{ fontFamily: "'Syne', sans-serif" }}
+                  aria-label={`${stat.value} ${stat.label}`}
+                >
+                  {stat.value}
+                </p>
+                <p className="text-white/50 text-sm">{stat.label}</p>
+              </div>
+            ))}
+          </ScrollRevealGroup>
         </div>
       </section>
 
@@ -217,13 +216,13 @@ export default function Home() {
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {servicesPreview.map((service, i) => (
-              <AnimatedSection key={service.title} delay={i * 100}>
+              <div key={service.title}>
                 <ServiceCard {...service} />
-              </AnimatedSection>
+              </div>
             ))}
-          </div>
+          </ScrollRevealGroup>
 
           <AnimatedSection className="text-center mt-10" delay={300}>
             <Link href="/services">
@@ -262,24 +261,22 @@ export default function Home() {
             </AnimatedSection>
 
             {/* Right: Feature Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ScrollRevealGroup staggerDelay={0.15} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {whyUs.map((item, i) => {
                 const Icon = item.icon;
                 return (
-                  <AnimatedSection key={item.title} delay={i * 80}>
-                    <div className="p-5 rounded-xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300 group">
-                      <div className="w-10 h-10 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center mb-4 group-hover:bg-[#22C55E]/15 transition-all duration-300">
-                        <Icon className="w-5 h-5 text-[#22C55E]" aria-hidden="true" />
-                      </div>
-                      <h3 className="text-white font-semibold text-sm mb-1.5" style={{ fontFamily: "'Syne', sans-serif" }}>
-                        {item.title}
-                      </h3>
-                      <p className="text-white/50 text-xs leading-relaxed">{item.desc}</p>
+                  <div key={item.title} className="p-5 rounded-xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300 group">
+                    <div className="w-10 h-10 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center mb-4 group-hover:bg-[#22C55E]/15 transition-all duration-300">
+                      <Icon className="w-5 h-5 text-[#22C55E]" aria-hidden="true" />
                     </div>
-                  </AnimatedSection>
+                    <h3 className="text-white font-semibold text-sm mb-1.5" style={{ fontFamily: "'Syne', sans-serif" }}>
+                      {item.title}
+                    </h3>
+                    <p className="text-white/50 text-xs leading-relaxed">{item.desc}</p>
+                  </div>
                 );
               })}
-            </div>
+            </ScrollRevealGroup>
           </div>
         </div>
       </section>

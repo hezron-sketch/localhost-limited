@@ -31,6 +31,7 @@ import PageLayout from "@/components/PageLayout";
 import ServiceCard from "@/components/ServiceCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import Card3D from "@/components/Card3D";
+import ScrollReveal, { ScrollRevealGroup } from "@/components/ScrollReveal";
 
 const SERVICES_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/services-bg-8Q3voRTxHkWeXjcMVBCnue.webp";
 
@@ -262,7 +263,7 @@ export default function Services() {
           </div>
 
           {/* Marketing Benefits */}
-          <AnimatedSection delay={300}>
+          <ScrollReveal>
             <div className="p-6 rounded-xl bg-[#0F2035] border border-[#22C55E]/20 flex flex-col md:flex-row md:items-center gap-6">
               <div className="shrink-0">
                 <p className="text-[#22C55E] text-sm font-semibold mb-1" style={{ fontFamily: "'Syne', sans-serif" }}>
@@ -279,7 +280,7 @@ export default function Services() {
                 ))}
               </div>
             </div>
-          </AnimatedSection>
+          </ScrollReveal>
         </div>
       </section>
 

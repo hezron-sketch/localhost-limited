@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
+import ScrollReveal, { ScrollRevealGroup } from "@/components/ScrollReveal";
 
 const ABOUT_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/about-hero-nZdUeLwgtJJp9RsXggBYUs.webp";
 
@@ -140,29 +141,27 @@ export default function About() {
             </AnimatedSection>
 
             {/* Stats panel */}
-            <AnimatedSection delay={150}>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { value: "2016", label: "Founded" },
-                  { value: "200+", label: "Clients Served" },
-                  { value: "15+", label: "Industries" },
-                  { value: "50+", label: "Team Members" },
-                ].map((stat, i) => (
-                  <div
-                    key={i}
-                    className="p-6 rounded-xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300"
+            <ScrollRevealGroup staggerDelay={0.15} className="grid grid-cols-2 gap-4">
+              {[
+                { value: "2016", label: "Founded" },
+                { value: "200+", label: "Clients Served" },
+                { value: "15+", label: "Industries" },
+                { value: "50+", label: "Team Members" },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="p-6 rounded-xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300"
+                >
+                  <p
+                    className="text-3xl font-extrabold gradient-text mb-1"
+                    style={{ fontFamily: "'Syne', sans-serif" }}
                   >
-                    <p
-                      className="text-3xl font-extrabold gradient-text mb-1"
-                      style={{ fontFamily: "'Syne', sans-serif" }}
-                    >
-                      {stat.value}
-                    </p>
-                    <p className="text-white/50 text-sm">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </AnimatedSection>
+                    {stat.value}
+                  </p>
+                  <p className="text-white/50 text-sm">{stat.label}</p>
+                </div>
+              ))}
+            </ScrollRevealGroup>
           </div>
         </div>
       </section>
@@ -183,45 +182,41 @@ export default function About() {
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Mission */}
-            <AnimatedSection delay={100}>
-              <div className="relative p-8 rounded-2xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300 overflow-hidden h-full">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#22C55E] to-transparent rounded-l-2xl" aria-hidden="true" />
-                <div className="w-12 h-12 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center mb-5">
-                  <Target className="w-6 h-6 text-[#22C55E]" aria-hidden="true" />
-                </div>
-                <h3
-                  className="text-xl font-bold text-white mb-3"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
-                >
-                  Our Mission
-                </h3>
-                <p className="text-white/60 leading-relaxed">
-                  To empower African businesses with intelligent marketing strategies, exceptional talent solutions, and strategic partnerships that drive sustainable, measurable growth — making world-class business services accessible to every ambitious organization on the continent.
-                </p>
+            <div className="relative p-8 rounded-2xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300 overflow-hidden h-full">
+              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#22C55E] to-transparent rounded-l-2xl" aria-hidden="true" />
+              <div className="w-12 h-12 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center mb-5">
+                <Target className="w-6 h-6 text-[#22C55E]" aria-hidden="true" />
               </div>
-            </AnimatedSection>
+              <h3
+                className="text-xl font-bold text-white mb-3"
+                style={{ fontFamily: "'Syne', sans-serif" }}
+              >
+                Our Mission
+              </h3>
+              <p className="text-white/60 leading-relaxed">
+                To empower African businesses with intelligent marketing strategies, exceptional talent solutions, and strategic partnerships that drive sustainable, measurable growth — making world-class business services accessible to every ambitious organization on the continent.
+              </p>
+            </div>
 
             {/* Vision */}
-            <AnimatedSection delay={200}>
-              <div className="relative p-8 rounded-2xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300 overflow-hidden h-full">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#4ADE80] to-transparent rounded-l-2xl" aria-hidden="true" />
-                <div className="w-12 h-12 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center mb-5">
-                  <Eye className="w-6 h-6 text-[#22C55E]" aria-hidden="true" />
-                </div>
-                <h3
-                  className="text-xl font-bold text-white mb-3"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
-                >
-                  Our Vision
-                </h3>
-                <p className="text-white/60 leading-relaxed">
-                  To be the leading integrated growth solutions provider in Africa — recognized for transforming how businesses attract customers, build teams, and forge partnerships. We envision a continent where every business has the tools and talent to compete globally.
-                </p>
+            <div className="relative p-8 rounded-2xl bg-[#0F2035] border border-white/8 hover:border-[#22C55E]/30 transition-all duration-300 overflow-hidden h-full">
+              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#4ADE80] to-transparent rounded-l-2xl" aria-hidden="true" />
+              <div className="w-12 h-12 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center mb-5">
+                <Eye className="w-6 h-6 text-[#22C55E]" aria-hidden="true" />
               </div>
-            </AnimatedSection>
-          </div>
+              <h3
+                className="text-xl font-bold text-white mb-3"
+                style={{ fontFamily: "'Syne', sans-serif" }}
+              >
+                Our Vision
+              </h3>
+              <p className="text-white/60 leading-relaxed">
+                To be the leading integrated growth solutions provider in Africa — recognized for transforming how businesses attract customers, build teams, and forge partnerships. We envision a continent where every business has the tools and talent to compete globally.
+              </p>
+            </div>
+          </ScrollRevealGroup>
         </div>
       </section>
 
