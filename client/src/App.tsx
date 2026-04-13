@@ -22,6 +22,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import CMSDashboard from "./pages/CMSDashboard";
+import Jobs from "./pages/Jobs";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/services" component={Services} />
+      <Route path="/jobs" component={Jobs} />
       <Route path="/partnerships" component={Partnerships} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/login" component={AdminLogin} />
