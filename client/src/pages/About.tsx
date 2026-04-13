@@ -103,11 +103,11 @@ export default function About() {
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 max-w-3xl"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              The Team Behind{" "}
-              <span className="gradient-text">Africa&apos;s Growth</span>
+              Driving Business Growth Through{" "}
+              <span className="gradient-text">Smart Marketing & Talent Solutions</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl leading-relaxed">
-              Founded in Nairobi in 2016, Localhost Limited has grown into a trusted partner for businesses seeking to scale through smart marketing, exceptional talent, and strategic alliances.
+              Localhost Limited was founded with a clear vision: to drive business growth and strengthen brand presence in a competitive marketplace. We deliver strategic and practical marketing solutions that expand market reach, increase visibility, and connect brands with the right customers.
             </p>
           </AnimatedSection>
         </div>
@@ -124,13 +124,13 @@ export default function About() {
                 className="text-3xl md:text-4xl font-extrabold text-white mb-5"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                From a Small Office in Nairobi to a Pan-African Powerhouse
+                Strategic Marketing & Talent Solutions for Growth
               </h2>
               <p className="text-white/60 leading-relaxed mb-4">
-                Localhost Limited was founded with a simple but powerful belief: that African businesses deserve world-class marketing and talent solutions. What started as a boutique digital marketing agency has evolved into a full-service growth partner.
+                By combining market insights, creative campaigns, and on-the-ground marketing activities, our team works closely with clients to develop tailored strategies that accelerate growth and deliver measurable results. At Localhost Limited, marketing goes beyond promotion—it focuses on building strong connections between brands and the people they serve.
               </p>
               <p className="text-white/60 leading-relaxed mb-6">
-                Today, we serve over 200 clients across East Africa, helping them build powerful brands, attract top talent, and forge partnerships that open new markets. Our integrated approach — combining marketing, HR, and partnerships under one roof — is what sets us apart.
+                We believe that strategic marketing, combined with exceptional talent acquisition and meaningful partnerships, creates the foundation for sustainable business growth. Our integrated approach ensures every aspect of your business—from brand visibility to team strength—works in harmony to achieve your goals.
               </p>
               <Link href="/contact">
                 <span className="btn-green inline-flex items-center gap-2 px-6 py-3">
