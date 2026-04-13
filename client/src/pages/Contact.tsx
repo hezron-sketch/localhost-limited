@@ -23,6 +23,7 @@ import { useState } from "react";
 import PageLayout from "@/components/PageLayout";
 import ContactForm from "@/components/ContactForm";
 import AnimatedSection from "@/components/AnimatedSection";
+import { COMPANY_INFO } from "@shared/company";
 
 const CONTACT_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/contact-bg-XawDw7fYMHSDGpKqpQA6RE.webp";
 
@@ -30,38 +31,38 @@ const contactDetails = [
   {
     icon: Mail,
     label: "Email Us",
-    value: "hello@localhostlimited.com",
-    href: "mailto:hello@localhostlimited.com",
+    value: COMPANY_INFO.contact.email,
+    href: `mailto:${COMPANY_INFO.contact.email}`,
     sub: "We reply within 24 hours",
   },
   {
     icon: Phone,
     label: "Call Us",
-    value: "+254 700 000 000",
-    href: "tel:+254700000000",
-    sub: "Mon–Fri, 8am–6pm EAT",
+    value: COMPANY_INFO.contact.phoneDisplay,
+    href: `tel:${COMPANY_INFO.contact.phone}`,
+    sub: "Mon–Fri, 9am–5pm EAT",
   },
   {
     icon: MapPin,
     label: "Visit Us",
-    value: "Nairobi, Kenya",
-    href: "https://maps.google.com/?q=Nairobi,Kenya",
-    sub: "Westlands Business District",
+    value: `${COMPANY_INFO.office.name}, ${COMPANY_INFO.office.city}`,
+    href: `https://maps.google.com/?q=${COMPANY_INFO.office.fullAddress}`,
+    sub: COMPANY_INFO.office.country,
   },
   {
     icon: Clock,
     label: "Business Hours",
-    value: "Mon–Fri: 8am – 6pm",
+    value: "Mon–Fri: 9am – 5pm",
     href: null,
-    sub: "EAT (UTC+3)",
+    sub: `${COMPANY_INFO.hours.timezone}`,
   },
 ];
 
 const socialLinks = [
-  { href: "https://linkedin.com", label: "LinkedIn", icon: Linkedin, handle: "@LocalhostLimited" },
-  { href: "https://twitter.com", label: "Twitter / X", icon: Twitter, handle: "@LocalhostLtd" },
-  { href: "https://instagram.com", label: "Instagram", icon: Instagram, handle: "@localhostlimited" },
-  { href: "https://facebook.com", label: "Facebook", icon: Facebook, handle: "Localhost Limited" },
+  { href: COMPANY_INFO.social.linkedin, label: "LinkedIn", icon: Linkedin, handle: "@LocalhostLimited" },
+  { href: COMPANY_INFO.social.twitter, label: "Twitter / X", icon: Twitter, handle: "@LocalhostLtd" },
+  { href: COMPANY_INFO.social.instagram, label: "Instagram", icon: Instagram, handle: "@localhostlimited" },
+  { href: COMPANY_INFO.social.facebook, label: "Facebook", icon: Facebook, handle: "Localhost Limited" },
 ];
 
 const faqs = [

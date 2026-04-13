@@ -8,6 +8,7 @@
 
 import { Link } from "wouter";
 import { Zap, MapPin, Phone, Mail, Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
+import { COMPANY_INFO } from "@shared/company";
 
 const footerLinks = {
   company: [
@@ -27,10 +28,10 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { href: "https://linkedin.com", label: "LinkedIn", icon: Linkedin },
-  { href: "https://twitter.com", label: "Twitter / X", icon: Twitter },
-  { href: "https://instagram.com", label: "Instagram", icon: Instagram },
-  { href: "https://facebook.com", label: "Facebook", icon: Facebook },
+  { href: COMPANY_INFO.social.linkedin, label: "LinkedIn", icon: Linkedin },
+  { href: COMPANY_INFO.social.twitter, label: "Twitter / X", icon: Twitter },
+  { href: COMPANY_INFO.social.instagram, label: "Instagram", icon: Instagram },
+  { href: COMPANY_INFO.social.facebook, label: "Facebook", icon: Facebook },
 ];
 
 export default function Footer() {
@@ -137,28 +138,28 @@ export default function Footer() {
             <ul className="space-y-4" role="list">
               <li>
                 <a
-                  href="mailto:hello@localhostlimited.com"
+                  href={`mailto:${COMPANY_INFO.contact.email}`}
                   className="flex items-start gap-3 text-white/55 text-sm hover:text-[#22C55E] transition-colors duration-200 group"
                   aria-label="Email us"
                 >
                   <Mail className="w-4 h-4 mt-0.5 shrink-0 group-hover:text-[#22C55E]" />
-                  hello@localhostlimited.com
+                  {COMPANY_INFO.contact.email}
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:+254700000000"
+                  href={`tel:${COMPANY_INFO.contact.phone}`}
                   className="flex items-start gap-3 text-white/55 text-sm hover:text-[#22C55E] transition-colors duration-200 group"
                   aria-label="Call us"
                 >
                   <Phone className="w-4 h-4 mt-0.5 shrink-0 group-hover:text-[#22C55E]" />
-                  +254 700 000 000
+                  {COMPANY_INFO.contact.phoneDisplay}
                 </a>
               </li>
               <li>
                 <div className="flex items-start gap-3 text-white/55 text-sm">
                   <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-[#22C55E]" />
-                  <span>Nairobi, Kenya</span>
+                  <span>{COMPANY_INFO.office.fullAddress}</span>
                 </div>
               </li>
             </ul>

@@ -22,6 +22,20 @@
       "when": 1776064924560,
       "tag": "0002_public_vivisector",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1776086048996,
+      "tag": "0003_talented_shinko_yamashiro",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1776086343049,
+      "tag": "0004_wooden_unicorn",
+      "breakpoints": true
     }
   ]
 }

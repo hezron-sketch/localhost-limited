@@ -5,6 +5,7 @@
  */
 
 import { ENV } from "./_core/env";
+import { COMPANY_INFO, HR_EMAIL } from "@shared/company";
 
 interface EmailParams {
   to: string;
@@ -13,7 +14,7 @@ interface EmailParams {
   from?: string;
 }
 
-const FROM_EMAIL = "noreply@localhostlimited.com";
+const FROM_EMAIL = "noreply@localhostlimitedafrica.com";
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 /**
@@ -82,11 +83,11 @@ export async function sendContactConfirmationEmail(name: string, email: string) 
           <div class="content">
             <p>Hi ${name},</p>
             <p>Thank you for reaching out to Localhost Limited. We've received your message and our team will review it shortly.</p>
-            <p>We typically respond within 24 hours during business days. If your inquiry is urgent, feel free to call us at <strong>+254 700 000 000</strong>.</p>
+            <p>We typically respond within 24 hours during business days. If your inquiry is urgent, feel free to call us at <strong>${COMPANY_INFO.contact.phoneDisplay}</strong>.</p>
             <p style="margin-top: 30px; color: #666;">
               Best regards,<br>
               <strong>The Localhost Limited Team</strong><br>
-              Nairobi, Kenya
+              ${COMPANY_INFO.office.fullAddress}
             </p>
           </div>
           <div class="footer">
@@ -142,7 +143,7 @@ export async function sendContactNotificationEmail(
               <p>${message.replace(/\n/g, "<br>")}</p>
             </div>
             <p style="margin-top: 20px;">
-              <a href="https://localhost-limited.manus.space/admin/contacts" style="background: #22C55E; color: #0D1B2A; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold;">View in Dashboard</a>
+              <a href="https://localhostlimitedafrica.com/admin/submissions" style="background: #22C55E; color: #0D1B2A; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold;">View in Dashboard</a>
             </p>
           </div>
           <div class="footer">
