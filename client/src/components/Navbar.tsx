@@ -9,7 +9,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -50,17 +50,11 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="/" aria-label="Localhost Limited — Home">
-          <div className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#22C55E] to-[#4ADE80] flex items-center justify-center shadow-[0_0_12px_rgba(34,197,94,0.5)] group-hover:shadow-[0_0_20px_rgba(34,197,94,0.7)] transition-all duration-300">
-              <Zap className="w-4 h-4 text-[#0A1628]" strokeWidth={2.5} />
-            </div>
-            <span
-              className="font-bold text-lg text-white tracking-tight"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
-              Localhost<span className="text-[#22C55E]">.</span>
-            </span>
-          </div>
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/LL1-logo-2_8137895a.png"
+            alt="Localhost Limited Logo"
+            className="h-10 md:h-12 w-auto transition-transform duration-300 hover:scale-105"
+          />
         </Link>
 
         {/* Desktop Navigation */}
