@@ -4,15 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 interface JobFormProps {
   onClose: () => void;
   editingId: number | null;
   onEditingChange: (id: number | null) => void;
+  onSuccess?: () => void;
 }
 
-export default function JobForm({ onClose, editingId, onEditingChange }: JobFormProps) {
+export default function JobForm({ onClose, editingId, onEditingChange, onSuccess }: JobFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -25,10 +27,37 @@ export default function JobForm({ onClose, editingId, onEditingChange }: JobForm
     imageUrl: "",
   });
 
+  const createJobMutation = trpc.cms.jobs.create.useMutation();
+  const isLoading = createJobMutation.isPending;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Job opening created successfully!");
-    onClose();
+    
+    if (!formData.title || !formData.description || !formData.department || !formData.location) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    try {
+      await createJobMutation.mutateAsync({
+        title: formData.title,
+        description: formData.description,
+        department: formData.department,
+        location: formData.location,
+        salaryRange: formData.salaryRange || undefined,
+        jobType: formData.jobType,
+        requirements: formData.requirements || undefined,
+        benefits: formData.benefits || undefined,
+        imageUrl: formData.imageUrl || undefined,
+      });
+      
+      toast.success("Job opening created successfully!");
+      onClose();
+      onSuccess?.();
+    } catch (error) {
+      console.error("Error creating job:", error);
+      toast.error("Failed to create job opening. Please try again.");
+    }
   };
 
   return (
@@ -144,8 +173,15 @@ export default function JobForm({ onClose, editingId, onEditingChange }: JobForm
         </div>
 
         <div className="flex gap-3 pt-4">
-          <Button type="submit" className="bg-[#22C55E] hover:bg-[#16A34A] text-black">
-            Create Job Opening
+          <Button type="submit" className="bg-[#22C55E] hover:bg-[#16A34A] text-black" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              "Create Job Opening"
+            )}
           </Button>
           <Button type="button" onClick={onClose} variant="outline">
             Cancel

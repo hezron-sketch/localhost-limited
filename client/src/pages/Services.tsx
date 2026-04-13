@@ -32,6 +32,7 @@ import ServiceCard from "@/components/ServiceCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import Card3D from "@/components/Card3D";
 import ScrollReveal, { ScrollRevealGroup } from "@/components/ScrollReveal";
+import JobListings from "@/components/JobListings";
 
 const SERVICES_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/services-bg-8Q3voRTxHkWeXjcMVBCnue.webp";
 
@@ -318,8 +319,17 @@ export default function Services() {
             ))}
           </div>
 
+          {/* Job Openings */}
+          <AnimatedSection delay={300} className="mb-12">
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-2">Available Job Openings</h3>
+              <p className="text-white/60">Join our growing team and make an impact. Explore current opportunities:</p>
+            </div>
+            <JobListings />
+          </AnimatedSection>
+
           {/* HR Benefits */}
-          <AnimatedSection delay={300}>
+          <AnimatedSection delay={400}>
             <div className="p-6 rounded-xl bg-[#0F2035] border border-[#22C55E]/20 flex flex-col md:flex-row md:items-center gap-6">
               <div className="shrink-0">
                 <p className="text-[#22C55E] text-sm font-semibold mb-1" style={{ fontFamily: "'Syne', sans-serif" }}>
