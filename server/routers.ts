@@ -7,9 +7,10 @@ import { createContactSubmission, listContactSubmissions, updateContactSubmissio
 import { notifyOwner } from "./_core/notification";
 import { sendContactConfirmationEmail, sendContactNotificationEmail } from "./email";
 import { TRPCError } from "@trpc/server";
+import { cmsRouter } from "./cms.router";
 
-// Helper to ensure user is admin
-const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+// Helper to ensure user is admin (also exported for use in other routers)
+export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (ctx.user?.role !== "admin") {
     throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
   }
@@ -137,6 +138,8 @@ export const appRouter = router({
         return { success: true, message: "Submission deleted successfully" };
       }),
   }),
+
+  cms: cmsRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

@@ -15,6 +15,13 @@
       "when": 1775728858307,
       "tag": "0001_green_bucky",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1776064924560,
+      "tag": "0002_public_vivisector",
+      "breakpoints": true
     }
   ]
 }

@@ -21,6 +21,7 @@ import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
+import CMSDashboard from "./pages/CMSDashboard";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin/panel" component={AdminPanel} />
       <Route path="/admin/submissions" component={AdminDashboard} />
+      <Route path="/admin/cms" component={CMSDashboard} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

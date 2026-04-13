@@ -1,6 +1,6 @@
 import { eq, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission } from "../drizzle/schema";
+import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission, jobOpenings, InsertJobOpening, JobOpening, marketingServices, InsertMarketingService, MarketingService, blogPosts, InsertBlogPost, BlogPost, organizationPartners, InsertOrganizationPartner, OrganizationPartner, galleryImages, InsertGalleryImage, GalleryImage } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -227,4 +227,178 @@ export async function getContactSubmissionStats() {
   }
 }
 
-// TODO: add feature queries here as your schema grows.
+// ============ Job Openings ============
+export async function createJobOpening(data: InsertJobOpening) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  return db.insert(jobOpenings).values(data);
+}
+
+export async function listJobOpenings(limit: number = 50, offset: number = 0) {
+  const db = await getDb();
+  if (!db) return { jobs: [], total: 0 };
+  const [jobs, countResult] = await Promise.all([
+    db.select().from(jobOpenings).where(eq(jobOpenings.status, "active")).orderBy(desc(jobOpenings.createdAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(jobOpenings) }).from(jobOpenings).where(eq(jobOpenings.status, "active")),
+  ]);
+  return { jobs, total: countResult[0]?.count || 0 };
+}
+
+export async function getJobOpeningById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(jobOpenings).where(eq(jobOpenings.id, id)).limit(1);
+  return result[0];
+}
+
+export async function updateJobOpening(id: number, data: Partial<InsertJobOpening>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.update(jobOpenings).set({ ...data, updatedAt: new Date() }).where(eq(jobOpenings.id, id));
+  return { success: true };
+}
+
+export async function deleteJobOpening(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.delete(jobOpenings).where(eq(jobOpenings.id, id));
+  return { success: true };
+}
+
+// ============ Marketing Services ============
+export async function createMarketingService(data: InsertMarketingService) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  return db.insert(marketingServices).values(data);
+}
+
+export async function listMarketingServices(limit: number = 50, offset: number = 0) {
+  const db = await getDb();
+  if (!db) return { services: [], total: 0 };
+  const [services, countResult] = await Promise.all([
+    db.select().from(marketingServices).where(eq(marketingServices.status, "active")).orderBy(desc(marketingServices.createdAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(marketingServices) }).from(marketingServices).where(eq(marketingServices.status, "active")),
+  ]);
+  return { services, total: countResult[0]?.count || 0 };
+}
+
+export async function getMarketingServiceById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(marketingServices).where(eq(marketingServices.id, id)).limit(1);
+  return result[0];
+}
+
+export async function updateMarketingService(id: number, data: Partial<InsertMarketingService>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.update(marketingServices).set({ ...data, updatedAt: new Date() }).where(eq(marketingServices.id, id));
+  return { success: true };
+}
+
+export async function deleteMarketingService(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.delete(marketingServices).where(eq(marketingServices.id, id));
+  return { success: true };
+}
+
+// ============ Blog Posts ============
+export async function createBlogPost(data: InsertBlogPost) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  return db.insert(blogPosts).values(data);
+}
+
+export async function listBlogPosts(limit: number = 50, offset: number = 0, category?: string) {
+  const db = await getDb();
+  if (!db) return { posts: [], total: 0 };
+  const whereConditions = category ? and(eq(blogPosts.status, "published"), eq(blogPosts.category, category as any)) : eq(blogPosts.status, "published");
+  const [posts, countResult] = await Promise.all([
+    db.select().from(blogPosts).where(whereConditions).orderBy(desc(blogPosts.publishedAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(blogPosts) }).from(blogPosts).where(whereConditions),
+  ]);
+  return { posts, total: countResult[0]?.count || 0 };
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(blogPosts).where(and(eq(blogPosts.slug, slug), eq(blogPosts.status, "published"))).limit(1);
+  return result[0];
+}
+
+export async function updateBlogPost(id: number, data: Partial<InsertBlogPost>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.update(blogPosts).set({ ...data, updatedAt: new Date() }).where(eq(blogPosts.id, id));
+  return { success: true };
+}
+
+export async function deleteBlogPost(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.delete(blogPosts).where(eq(blogPosts.id, id));
+  return { success: true };
+}
+
+// ============ Organization Partners ============
+export async function createOrganizationPartner(data: InsertOrganizationPartner) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  return db.insert(organizationPartners).values(data);
+}
+
+export async function listOrganizationPartners(limit: number = 50, offset: number = 0) {
+  const db = await getDb();
+  if (!db) return { partners: [], total: 0 };
+  const [partners, countResult] = await Promise.all([
+    db.select().from(organizationPartners).where(eq(organizationPartners.status, "active")).orderBy(desc(organizationPartners.createdAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(organizationPartners) }).from(organizationPartners).where(eq(organizationPartners.status, "active")),
+  ]);
+  return { partners, total: countResult[0]?.count || 0 };
+}
+
+export async function getOrganizationPartnerById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(organizationPartners).where(eq(organizationPartners.id, id)).limit(1);
+  return result[0];
+}
+
+export async function updateOrganizationPartner(id: number, data: Partial<InsertOrganizationPartner>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.update(organizationPartners).set({ ...data, updatedAt: new Date() }).where(eq(organizationPartners.id, id));
+  return { success: true };
+}
+
+export async function deleteOrganizationPartner(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.delete(organizationPartners).where(eq(organizationPartners.id, id));
+  return { success: true };
+}
+
+// ============ Gallery Images ============
+export async function createGalleryImage(data: InsertGalleryImage) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  return db.insert(galleryImages).values(data);
+}
+
+export async function listGalleryImages(section?: string) {
+  const db = await getDb();
+  if (!db) return [];
+  const whereConditions = section ? eq(galleryImages.section, section as any) : undefined;
+  return db.select().from(galleryImages).where(whereConditions).orderBy(desc(galleryImages.createdAt));
+}
+
+export async function deleteGalleryImage(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.delete(galleryImages).where(eq(galleryImages.id, id));
+  return { success: true };
+}
+
+// TODO: add additional feature queries as needed

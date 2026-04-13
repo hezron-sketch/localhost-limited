@@ -42,4 +42,105 @@ export const contactSubmissions = mysqlTable("contactSubmissions", {
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
 export type InsertContactSubmission = typeof contactSubmissions.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Job Openings for HR Sourcing section
+ * Stores all active and archived job postings
+ */
+export const jobOpenings = mysqlTable("jobOpenings", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  department: varchar("department", { length: 100 }).notNull(),
+  location: varchar("location", { length: 100 }).notNull(),
+  salaryRange: varchar("salaryRange", { length: 100 }),
+  jobType: mysqlEnum("jobType", ["full-time", "part-time", "contract", "remote"]).notNull(),
+  requirements: text("requirements"),
+  benefits: text("benefits"),
+  imageUrl: text("imageUrl"),
+  status: mysqlEnum("status", ["active", "archived"]).default("active").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type JobOpening = typeof jobOpenings.$inferSelect;
+export type InsertJobOpening = typeof jobOpenings.$inferInsert;
+
+/**
+ * Marketing Services
+ * Stores marketing service offerings with descriptions and benefits
+ */
+export const marketingServices = mysqlTable("marketingServices", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  category: mysqlEnum("category", ["social-media", "seo", "content", "other"]).notNull(),
+  benefits: text("benefits"),
+  imageUrl: text("imageUrl"),
+  price: varchar("price", { length: 100 }),
+  status: mysqlEnum("status", ["active", "archived"]).default("active").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MarketingService = typeof marketingServices.$inferSelect;
+export type InsertMarketingService = typeof marketingServices.$inferInsert;
+
+/**
+ * Blog Posts
+ * Stores blog articles for all three business sections
+ */
+export const blogPosts = mysqlTable("blogPosts", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  content: text("content").notNull(),
+  excerpt: text("excerpt"),
+  category: mysqlEnum("category", ["organization", "hr-sourcing", "marketing", "partnerships"]).notNull(),
+  imageUrl: text("imageUrl"),
+  author: varchar("author", { length: 100 }).notNull(),
+  status: mysqlEnum("status", ["draft", "published", "archived"]).default("draft").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  publishedAt: timestamp("publishedAt"),
+});
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertBlogPost = typeof blogPosts.$inferInsert;
+
+/**
+ * Organization Partners
+ * Stores information about partner organizations
+ */
+export const organizationPartners = mysqlTable("organizationPartners", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  partnerType: mysqlEnum("partnerType", ["corporate", "startup", "agency", "other"]).notNull(),
+  website: varchar("website", { length: 255 }),
+  logoUrl: text("logoUrl"),
+  benefits: text("benefits"),
+  status: mysqlEnum("status", ["active", "inactive"]).default("active").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type OrganizationPartner = typeof organizationPartners.$inferSelect;
+export type InsertOrganizationPartner = typeof organizationPartners.$inferInsert;
+
+/**
+ * Gallery Images
+ * Stores images for various sections of the website
+ */
+export const galleryImages = mysqlTable("galleryImages", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  imageUrl: text("imageUrl").notNull(),
+  section: mysqlEnum("section", ["hero", "services", "team", "partners", "testimonials", "other"]).notNull(),
+  altText: varchar("altText", { length: 255 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type GalleryImage = typeof galleryImages.$inferSelect;
+export type InsertGalleryImage = typeof galleryImages.$inferInsert;
+
+// TODO: Add additional tables as needed
