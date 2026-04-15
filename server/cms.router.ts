@@ -24,6 +24,10 @@ import {
   createGalleryImage,
   listGalleryImages,
   deleteGalleryImage,
+  createJobApplication,
+  listJobApplications,
+  updateJobApplicationStatus,
+  deleteJobApplication,
 } from "./db";
 
 // ============ Job Openings Router ============
@@ -233,6 +237,40 @@ export const galleryRouter = router({
     .mutation(async ({ input }) => deleteGalleryImage(input.id)),
 });
 
+// ============ Job Applications Router ============
+export const jobApplicationsRouter = router({
+  list: adminProcedure
+    .input(z.object({ 
+      jobId: z.number().optional(),
+      status: z.string().optional(),
+      limit: z.number().default(50), 
+      offset: z.number().default(0) 
+    }))
+    .query(async ({ input }) => listJobApplications(input.limit, input.offset, input.jobId, input.status)),
+
+  create: publicProcedure
+    .input(z.object({
+      jobId: z.number(),
+      fullName: z.string().min(1),
+      email: z.string().email(),
+      phone: z.string().min(1),
+      cvUrl: z.string().min(1),
+      coverLetter: z.string().optional(),
+    }))
+    .mutation(async ({ input }) => createJobApplication(input)),
+
+  updateStatus: adminProcedure
+    .input(z.object({
+      id: z.number(),
+      status: z.enum(["pending", "reviewed", "accepted", "rejected"]),
+    }))
+    .mutation(async ({ input }) => updateJobApplicationStatus(input.id, input.status)),
+
+  delete: adminProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => deleteJobApplication(input.id)),
+});
+
 // ============ CMS Router ============
 export const cmsRouter = router({
   jobs: jobsRouter,
@@ -240,4 +278,5 @@ export const cmsRouter = router({
   blog: blogRouter,
   partners: partnersRouter,
   gallery: galleryRouter,
+  applications: jobApplicationsRouter,
 });

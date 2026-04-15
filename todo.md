@@ -49,3 +49,14 @@
 ## Phase 8: Deployment
 - [x] Save checkpoint with all updates
 - [x] Verify website is production-ready
+
+
+## Bug Fixes - HR Dashboard & Job Applications
+
+- [x] Fix "+New Job" button - implement modal form and create job functionality
+- [x] Create job application tRPC router endpoints
+- [x] Update HR dashboard to fetch and display applications
+- [x] Fix job application submission to store data in database
+- [x] Implement email notification to HR email (hr@localhostlimitedafrica.com)
+- [x] Test application submission end-to-end (15/15 tests passing)
+- [x] Verify email notifications are sent (Resend API integration complete)

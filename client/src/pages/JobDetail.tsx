@@ -38,7 +38,7 @@ export default function JobDetail() {
   const job = jobs.find((j: any) => j.id === jobId) as any;
 
   // Apply for job mutation
-  const applyMutation = trpc.contact.submit.useMutation({
+  const applicationMutation = trpc.cms.applications.create.useMutation({
     onSuccess: () => {
       setSubmitStatus("success");
       setSubmitMessage("Application submitted successfully! We'll review it and get back to you soon.");
@@ -93,13 +93,35 @@ export default function JobDetail() {
 
       const { url: cvUrl } = await uploadResponse.json();
 
-      // Submit application
-      await applyMutation.mutateAsync({
-        name: formData.fullName,
+      // Submit application to database
+      await applicationMutation.mutateAsync({
+        jobId,
+        fullName: formData.fullName,
         email: formData.email,
-        message: `Job Application for: ${job.title}\n\nPhone: ${formData.phone}\nCV: ${cvUrl}\n\nCover Letter:\n${formData.coverLetter || 'N/A'}`,
+        phone: formData.phone,
+        cvUrl,
+        coverLetter: formData.coverLetter || undefined,
       });
+
+      // Send email notification to HR with the uploaded CV URL
+      try {
+        await fetch("/api/send-hr-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jobTitle: job.title,
+            applicantName: formData.fullName,
+            applicantEmail: formData.email,
+            applicantPhone: formData.phone,
+            cvUrl: cvUrl,
+            coverLetter: formData.coverLetter,
+          }),
+        });
+      } catch (error) {
+        console.error("Failed to send HR email:", error);
+      }
     } catch (error: any) {
+      console.error("Application submission error:", error);
       setSubmitStatus("error");
       setSubmitMessage(error.message || "Failed to submit application");
     } finally {
