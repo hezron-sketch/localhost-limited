@@ -1,6 +1,6 @@
 import { eq, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission, jobOpenings, InsertJobOpening, JobOpening, marketingServices, InsertMarketingService, MarketingService, blogPosts, InsertBlogPost, BlogPost, organizationPartners, InsertOrganizationPartner, OrganizationPartner, galleryImages, InsertGalleryImage, GalleryImage } from "../drizzle/schema";
+import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission, jobOpenings, InsertJobOpening, JobOpening, marketingServices, InsertMarketingService, MarketingService, blogPosts, InsertBlogPost, BlogPost, organizationPartners, InsertOrganizationPartner, OrganizationPartner, galleryImages, InsertGalleryImage, GalleryImage, jobApplications, InsertJobApplication, JobApplication } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -398,6 +398,61 @@ export async function deleteGalleryImage(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
   await db.delete(galleryImages).where(eq(galleryImages.id, id));
+  return { success: true };
+}
+
+// ============ Job Applications ============
+export async function createJobApplication(data: InsertJobApplication): Promise<JobApplication> {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  const result = await db.insert(jobApplications).values(data);
+  const id = result[0].insertId as number;
+  return getJobApplicationById(id) as Promise<JobApplication>;
+}
+
+export async function getJobApplicationById(id: number): Promise<JobApplication | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(jobApplications).where(eq(jobApplications.id, id));
+  return result[0] || null;
+}
+
+export async function listJobApplications(limit: number = 50, offset: number = 0, jobId?: number, status?: string) {
+  const db = await getDb();
+  if (!db) return { applications: [], total: 0 };
+  
+  let query = db.select().from(jobApplications);
+  
+  if (jobId) {
+    query = query.where(eq(jobApplications.jobId, jobId)) as any;
+  }
+  
+  if (status) {
+    query = query.where(eq(jobApplications.status, status as any)) as any;
+  }
+  
+  const applications = await query.orderBy(desc(jobApplications.appliedAt)).limit(limit).offset(offset);
+  
+  // Get total count
+  let countQuery = db.select().from(jobApplications);
+  if (jobId) countQuery = countQuery.where(eq(jobApplications.jobId, jobId)) as any;
+  if (status) countQuery = countQuery.where(eq(jobApplications.status, status as any)) as any;
+  const countResult = await countQuery;
+  
+  return { applications, total: countResult.length };
+}
+
+export async function updateJobApplicationStatus(id: number, status: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.update(jobApplications).set({ status: status as any }).where(eq(jobApplications.id, id));
+  return getJobApplicationById(id);
+}
+
+export async function deleteJobApplication(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.delete(jobApplications).where(eq(jobApplications.id, id));
   return { success: true };
 }
 

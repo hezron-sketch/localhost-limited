@@ -143,4 +143,24 @@ export const galleryImages = mysqlTable("galleryImages", {
 export type GalleryImage = typeof galleryImages.$inferSelect;
 export type InsertGalleryImage = typeof galleryImages.$inferInsert;
 
+/**
+ * Job Applications
+ * Stores all job applications submitted by candidates
+ */
+export const jobApplications = mysqlTable("jobApplications", {
+  id: int("id").autoincrement().primaryKey(),
+  jobId: int("jobId").notNull(),
+  fullName: varchar("fullName", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  phone: varchar("phone", { length: 20 }).notNull(),
+  cvUrl: text("cvUrl").notNull(),
+  coverLetter: text("coverLetter"),
+  status: mysqlEnum("status", ["pending", "reviewed", "accepted", "rejected"]).default("pending").notNull(),
+  appliedAt: timestamp("appliedAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type JobApplication = typeof jobApplications.$inferSelect;
+export type InsertJobApplication = typeof jobApplications.$inferInsert;
+
 // TODO: Add additional tables as needed
