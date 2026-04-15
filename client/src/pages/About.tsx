@@ -30,59 +30,59 @@ const ABOUT_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjK
 const coreValues = [
   {
     icon: Heart,
-    title: "Client-Centric",
-    description: "Every decision we make is guided by what delivers the most value to our clients. Your success is our success.",
+    title: "Market-Driven",
+    description: "Every strategy is grounded in deep market insights and consumer behavior research. We understand the East African market inside and out.",
   },
   {
     icon: Lightbulb,
-    title: "Innovation",
-    description: "We stay ahead of industry trends to bring cutting-edge strategies and solutions to every engagement.",
+    title: "Creative Excellence",
+    description: "We bring innovative ideas to life through immersive brand experiences that captivate audiences and drive engagement.",
   },
   {
     icon: Shield,
-    title: "Integrity",
-    description: "Transparency and honesty are non-negotiable. We build relationships on trust and deliver on our promises.",
+    title: "Field Execution",
+    description: "Our experienced teams execute activations with precision. We don't just plan—we deliver results on the ground.",
   },
   {
     icon: Target,
-    title: "Excellence",
-    description: "We hold ourselves to the highest standards in everything we do, from strategy to execution.",
+    title: "Conversion-Focused",
+    description: "Every campaign is measured and optimized for business results. We track performance and drive measurable conversion.",
   },
   {
     icon: Users,
-    title: "Collaboration",
-    description: "We believe the best outcomes emerge from genuine partnerships — with clients and within our team.",
+    title: "Strategic Partnerships",
+    description: "We collaborate closely with retailers, distributors, and brands to strengthen relationships and improve market presence.",
   },
   {
     icon: Eye,
-    title: "Accountability",
-    description: "We own our results, celebrate wins, and learn from challenges with full transparency.",
+    title: "Transparency",
+    description: "We provide clear reporting and honest communication. You always know how your campaigns are performing.",
   },
 ];
 
 const teamMembers = [
   { name: "James Mwangi", role: "Chief Executive Officer", initials: "JM", dept: "Leadership" },
-  { name: "Grace Njeri", role: "Head of Marketing", initials: "GN", dept: "Marketing" },
-  { name: "Kevin Otieno", role: "Head of HR Sourcing", initials: "KO", dept: "HR" },
-  { name: "Fatuma Ali", role: "Partnerships Director", initials: "FA", dept: "Partnerships" },
-  { name: "Brian Kamau", role: "Digital Strategy Lead", initials: "BK", dept: "Marketing" },
-  { name: "Lydia Wanjiku", role: "Senior Talent Consultant", initials: "LW", dept: "HR" },
+  { name: "Grace Njeri", role: "Head of Brand Activation", initials: "GN", dept: "Marketing" },
+  { name: "Kevin Otieno", role: "Head of Field Execution", initials: "KO", dept: "Operations" },
+  { name: "Fatuma Ali", role: "Partnerships & Retail Director", initials: "FA", dept: "Partnerships" },
+  { name: "Brian Kamau", role: "BTL & Experiential Lead", initials: "BK", dept: "Marketing" },
+  { name: "Lydia Wanjiku", role: "Senior Campaign Manager", initials: "LW", dept: "Operations" },
 ];
 
 const whyChooseUs = [
-  "Deep understanding of African markets and business culture",
-  "Integrated approach combining marketing, HR, and partnerships",
-  "Dedicated account managers for every client",
-  "Transparent reporting and measurable KPIs",
-  "Flexible engagement models to suit any budget",
-  "Proven track record across 15+ industries",
+  "Award-winning agency: Best Marketing Agency (DigiSoko 2020), Best e-Commerce Agency Tanzania (2019)",
+  "Deep market insights across East Africa and beyond",
+  "Experienced field teams executing activations with precision",
+  "Comprehensive services: Brand Activation, BTL, Field Marketing, Printing & Branding, Video Production",
+  "Transparent reporting and measurable campaign performance",
+  "Proven track record across 200+ successful engagements",
 ];
 
 export default function About() {
   return (
     <PageLayout
       title="About Us"
-      description="Learn about Localhost Limited — our mission, vision, core values, and the team behind Africa's leading marketing and talent solutions company."
+      description="Learn about Localhost Limited — award-winning brand activation and field marketing agency based in Nairobi, Kenya. Discover our mission, values, and the team behind Africa's leading marketing solutions company."
     >
       {/* ─── Hero ─── */}
       <section
@@ -104,10 +104,10 @@ export default function About() {
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
               Driving Business Growth Through{" "}
-              <span className="gradient-text">Smart Marketing & Talent Solutions</span>
+              <span className="gradient-text">Brand Activation & Field Excellence</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl leading-relaxed">
-              Localhost Limited was founded with a clear vision: to drive business growth and strengthen brand presence in a competitive marketplace. We deliver strategic and practical marketing solutions that expand market reach, increase visibility, and connect brands with the right customers.
+              Founded in 2017, Localhost Limited was established with a clear vision: to drive business growth and strengthen brand presence in a competitive marketplace. We deliver innovative brand activation, BTL marketing, and field execution solutions that expand market reach, increase visibility, and connect brands with the right customers.
             </p>
           </AnimatedSection>
         </div>
@@ -118,19 +118,19 @@ export default function About() {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <AnimatedSection>
-              <p className="section-label mb-3">Our Story</p>
+              <p className="section-label mb-3">Our Journey</p>
               <h2
                 id="overview-heading"
                 className="text-3xl md:text-4xl font-extrabold text-white mb-5"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                Strategic Marketing & Talent Solutions for Growth
+                Award-Winning Brand Activation & Field Marketing
               </h2>
               <p className="text-white/60 leading-relaxed mb-4">
-                By combining market insights, creative campaigns, and on-the-ground marketing activities, our team works closely with clients to develop tailored strategies that accelerate growth and deliver measurable results. At Localhost Limited, marketing goes beyond promotion—it focuses on building strong connections between brands and the people they serve.
+                By combining market insights, creative campaigns, and on-the-ground execution, our experienced field teams work closely with clients to develop tailored strategies that accelerate growth and deliver measurable results. At Localhost Limited, brand activation goes beyond promotion—it focuses on building strong connections between brands and their target audiences through immersive experiences.
               </p>
               <p className="text-white/60 leading-relaxed mb-6">
-                We believe that strategic marketing, combined with exceptional talent acquisition and meaningful partnerships, creates the foundation for sustainable business growth. Our integrated approach ensures every aspect of your business—from brand visibility to team strength—works in harmony to achieve your goals.
+                We believe that strategic brand activation, combined with powerful BTL marketing and meaningful partnerships, creates the foundation for sustainable business growth. Our integrated approach ensures every campaign—from retail activations to mass awareness—works in harmony to achieve your goals and drive conversion.
               </p>
               <Link href="/contact">
                 <span className="btn-green inline-flex items-center gap-2 px-6 py-3">

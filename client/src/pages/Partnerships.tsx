@@ -34,38 +34,38 @@ const PARTNERSHIPS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/31051966353014535
 const partnerTypes = [
   {
     icon: Building2,
-    title: "Corporate Partners",
-    description: "Large enterprises and established companies looking to expand their market reach, access specialized talent, or co-create marketing initiatives.",
+    title: "Retail & Supermarket Partners",
+    description: "Supermarkets, retail chains, and distribution networks seeking brand activation, product promotion, and consumer engagement at point of sale.",
     features: [
-      "Co-branded marketing campaigns",
-      "Shared talent pools & referrals",
-      "Joint go-to-market strategies",
-      "Executive networking events",
+      "In-store brand activations",
+      "Product promotion campaigns",
+      "Shelf management optimization",
+      "Consumer sampling programs",
     ],
-    badge: "Enterprise",
+    badge: "Retail",
   },
   {
     icon: Rocket,
-    title: "Startup Partners",
-    description: "High-growth startups seeking strategic support, market access, and the resources needed to scale rapidly across African markets.",
+    title: "Corporate & Brand Partners",
+    description: "Large enterprises and established brands looking to expand market reach, strengthen brand presence, and drive consumer engagement.",
     features: [
-      "Growth marketing support",
-      "Talent acquisition priority access",
-      "Investor network introductions",
-      "Mentorship & advisory sessions",
+      "Brand activation campaigns",
+      "Market expansion support",
+      "Field marketing execution",
+      "Performance tracking & optimization",
     ],
-    badge: "Growth",
+    badge: "Corporate",
     featured: true,
   },
   {
     icon: Network,
-    title: "Agency Partners",
-    description: "Marketing, PR, and consulting agencies that want to expand their service offerings and collaborate on client projects.",
+    title: "Agency & Service Partners",
+    description: "Marketing, PR, and consulting agencies that want to expand their service offerings through our specialized capabilities.",
     features: [
       "White-label service agreements",
-      "Revenue sharing programs",
+      "Co-execution on campaigns",
       "Joint client pitches",
-      "Resource & knowledge sharing",
+      "Resource & expertise sharing",
     ],
     badge: "Agency",
   },
@@ -74,49 +74,49 @@ const partnerTypes = [
 const partnerBenefits = [
   {
     icon: Globe,
-    title: "Market Access",
-    desc: "Tap into our established network of 200+ businesses across East Africa and beyond.",
+    title: "Market Reach",
+    desc: "Tap into our established network of 200+ retail and corporate partners across East Africa.",
   },
   {
     icon: TrendingUp,
-    title: "Revenue Growth",
-    desc: "Unlock new revenue streams through referrals, co-selling, and joint service offerings.",
+    title: "Campaign Excellence",
+    desc: "Leverage our award-winning brand activation and field marketing expertise for maximum impact.",
   },
   {
     icon: Users,
-    title: "Talent Network",
-    desc: "Access our pre-vetted talent database and recruitment expertise for your hiring needs.",
+    title: "Experienced Teams",
+    desc: "Access our trained field teams and execution capabilities for on-the-ground campaign delivery.",
   },
   {
     icon: Star,
     title: "Brand Visibility",
-    desc: "Co-marketing opportunities that amplify your brand to our entire client and partner ecosystem.",
+    desc: "Co-marketing opportunities that amplify your brand to our entire partner ecosystem.",
   },
   {
     icon: Zap,
-    title: "Fast Onboarding",
-    desc: "Streamlined partnership onboarding process — from agreement to active collaboration in 2 weeks.",
+    title: "Fast Activation",
+    desc: "Streamlined partnership process — from agreement to active campaign execution in 2 weeks.",
   },
   {
     icon: BarChart3,
     title: "Performance Tracking",
-    desc: "Dedicated partner portal with real-time analytics on referrals, revenue, and joint activities.",
+    desc: "Real-time analytics on campaign performance, consumer engagement, and conversion metrics.",
   },
 ];
 
 const partnerLogos = [
-  { name: "TechVentures", initials: "TV", category: "Corporate" },
-  { name: "Fintech Hub", initials: "FH", category: "Startup" },
-  { name: "MediaGroup", initials: "MG", category: "Agency" },
-  { name: "GreenGrow", initials: "GG", category: "Startup" },
-  { name: "AfriTech", initials: "AT", category: "Corporate" },
-  { name: "CreativeX", initials: "CX", category: "Agency" },
-  { name: "DataFlow", initials: "DF", category: "Corporate" },
-  { name: "BuildRight", initials: "BR", category: "Startup" },
-  { name: "NexusLabs", initials: "NL", category: "Corporate" },
-  { name: "PulseMedia", initials: "PM", category: "Agency" },
-  { name: "ScaleUp", initials: "SU", category: "Startup" },
-  { name: "ConnectPro", initials: "CP", category: "Agency" },
+  { name: "Nakumatt", initials: "NK", category: "Retail" },
+  { name: "Carrefour", initials: "CF", category: "Retail" },
+  { name: "Safaricom", initials: "SF", category: "Corporate" },
+  { name: "Equity Bank", initials: "EB", category: "Corporate" },
+  { name: "Unilever", initials: "UL", category: "Corporate" },
+  { name: "Nestlé", initials: "NS", category: "Corporate" },
+  { name: "Jumia", initials: "JM", category: "Corporate" },
+  { name: "Glovo", initials: "GL", category: "Corporate" },
+  { name: "Twiga Foods", initials: "TF", category: "Corporate" },
+  { name: "iHub", initials: "IH", category: "Agency" },
+  { name: "Waveup", initials: "WU", category: "Agency" },
+  { name: "Craft Silicon", initials: "CS", category: "Agency" },
 ];
 
 const partnershipProcess = [
@@ -130,7 +130,7 @@ export default function Partnerships() {
   return (
     <PageLayout
       title="Partnerships"
-      description="Partner with Localhost Limited to unlock new markets, revenue streams, and collaborative opportunities. We work with corporates, startups, and agencies across Africa."
+      description="Partner with Localhost Limited for brand activation, field marketing, and retail campaigns. We work with retail chains, corporate brands, and agencies across East Africa."
     >
       {/* ─── Hero ─── */}
       <section
@@ -146,7 +146,7 @@ export default function Partnerships() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/70 via-[#0D1B2A]/80 to-[#0D1B2A]" />
         <div className="container mx-auto relative z-10">
           <AnimatedSection>
-            <p className="section-label mb-3">Partnership Program</p>
+            <p className="section-label mb-3">Strategic Partnerships</p>
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 max-w-3xl"
               style={{ fontFamily: "'Syne', sans-serif" }}

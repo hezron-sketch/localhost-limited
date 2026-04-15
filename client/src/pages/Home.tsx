@@ -14,12 +14,12 @@ import { Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import {
   ArrowRight,
-  TrendingUp,
-  Users,
-  Handshake,
+  Sparkles,
+  Zap,
+  Target,
   CheckCircle,
   BarChart3,
-  Target,
+  Rocket,
   Globe,
   Award,
   ChevronRight,
@@ -43,54 +43,54 @@ const stats = [
 
 const servicesPreview = [
   {
-    icon: TrendingUp,
-    title: "Marketing Services",
-    description: "Data-driven digital marketing strategies that amplify your brand presence and drive measurable growth across all channels.",
-    benefits: ["Social media management", "SEO & digital campaigns", "Content marketing"],
+    icon: Sparkles,
+    title: "Brand Activation",
+    description: "Immersive brand experiences that captivate audiences and create lasting connections. From promotional events to mass awareness campaigns.",
+    benefits: ["Event organization", "Mass mobilization campaigns", "Brand experiences"],
   },
   {
-    icon: Users,
-    title: "HR Sourcing",
-    description: "End-to-end talent acquisition and workforce solutions that connect you with the right people to scale your business.",
-    benefits: ["Talent acquisition", "Recruitment outsourcing", "Workforce solutions"],
+    icon: Zap,
+    title: "BTL & Experiential",
+    description: "Below-the-line marketing that drives consumer engagement and conversion. Strategic retail activations and field marketing excellence.",
+    benefits: ["Retail campaigns", "Consumer promotion", "Route to market"],
   },
   {
-    icon: Handshake,
-    title: "Partnerships",
-    description: "Strategic partnership facilitation that creates mutually beneficial relationships between corporates, startups, and agencies.",
-    benefits: ["Corporate partnerships", "Startup collaborations", "Agency networks"],
+    icon: Target,
+    title: "Field Execution",
+    description: "Experienced field teams that execute promotions, activations, and campaigns with precision. Market insights driving every decision.",
+    benefits: ["Strategic planning", "Performance monitoring", "Conversion optimization"],
   },
 ];
 
 const testimonials = [
   {
-    quote: "Localhost Limited transformed our digital presence completely. Their marketing team delivered results that exceeded our expectations within just 3 months.",
+    quote: "Their brand activation campaign increased our product visibility by 300% in 8 weeks. Field teams executed flawlessly with measurable results.",
     name: "Sarah Kamau",
-    role: "CEO",
-    company: "TechVentures Africa",
+    role: "Marketing Director",
+    company: "Unilever East Africa",
     rating: 5,
   },
   {
-    quote: "The HR sourcing team found us three exceptional senior engineers in record time. Their understanding of our culture and technical requirements was impressive.",
+    quote: "The BTL campaign in our retail network drove 45% increase in consumer engagement. Professional execution and measurable ROI.",
     name: "David Ochieng",
-    role: "CTO",
-    company: "Fintech Solutions Ltd",
+    role: "Retail Manager",
+    company: "Nakumatt Holdings",
     rating: 5,
   },
   {
-    quote: "Through their partnership program, we connected with two major corporate clients that have become our biggest revenue streams. Highly recommended.",
+    quote: "Their integrated brand activation approach transformed how we connect with consumers. Outstanding strategy and execution.",
     name: "Amina Hassan",
-    role: "Founder",
-    company: "GreenGrow Startup",
+    role: "Brand Manager",
+    company: "Nestlé Tanzania",
     rating: 5,
   },
 ];
 
 const whyUs = [
-  { icon: Target, title: "Results-Driven", desc: "Every strategy is tied to measurable KPIs and business outcomes." },
-  { icon: Globe, title: "Pan-African Reach", desc: "Deep market knowledge across East Africa and beyond." },
-  { icon: Award, title: "Proven Track Record", desc: "200+ successful engagements across diverse industries." },
-  { icon: BarChart3, title: "Data-First Approach", desc: "Decisions backed by analytics, not guesswork." },
+  { icon: Rocket, title: "Field Expertise", desc: "Experienced teams executing activations with precision and market insight." },
+  { icon: Globe, title: "Market Insights", desc: "Deep understanding of consumer behavior and retail trends across East Africa." },
+  { icon: Award, title: "Award-Winning", desc: "Best Marketing Agency (DigiSoko 2020) & Best e-Commerce Agency Tanzania (2019)." },
+  { icon: BarChart3, title: "Conversion-Focused", desc: "Every campaign tracked and optimized for measurable business results." },
 ];
 
 export default function Home() {
@@ -101,7 +101,7 @@ export default function Home() {
   return (
     <PageLayout
       title="Home"
-      description="Localhost Limited empowers businesses through smart marketing strategies, HR sourcing, and strategic partnerships. Based in Nairobi, Kenya."
+      description="Localhost Limited delivers innovative brand activation, BTL marketing, and field execution services. Award-winning marketing agency based in Nairobi, Kenya."
     >
       {/* ─── Hero Section ─── */}
       <section
@@ -134,13 +134,13 @@ export default function Home() {
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
               Empowering Growth Through{" "}
-              <span className="gradient-text">Smart Marketing</span>{" "}
-              &amp; Talent Solutions
+              <span className="gradient-text">Brand Activation</span>{" "}
+              &amp; Field Excellence
             </h1>
 
             {/* Subtext */}
             <p className="text-white/65 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl animate-fade-in-up delay-100">
-              Localhost Limited is your strategic partner for digital marketing excellence, top-tier talent acquisition, and high-value business partnerships across Africa and beyond.
+              Localhost Limited is your strategic partner for innovative brand activation, market-driven field marketing, and strategic retail campaigns across East Africa and beyond.
             </p>
 
             {/* CTAs */}
@@ -247,10 +247,10 @@ export default function Home() {
                 className="text-3xl md:text-4xl font-extrabold text-white mb-5"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                Built for Businesses That Demand Results
+                Built for Brands That Demand Impact
               </h2>
               <p className="text-white/55 leading-relaxed mb-8">
-                We combine deep industry expertise with a data-driven approach to deliver solutions that create real, measurable impact. Our team of specialists works as an extension of your business, not just a vendor.
+                We combine market insights, creative campaigns, and on-the-ground execution to deliver brand experiences that connect with audiences and drive conversion. Our field teams work as an extension of your brand, not just a vendor.
               </p>
               <Link href="/about">
                 <span className="btn-green inline-flex items-center gap-2 px-6 py-3">

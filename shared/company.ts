@@ -5,7 +5,7 @@
 
 export const COMPANY_INFO = {
   name: "Localhost Limited",
-  tagline: "Empowering Growth Through Smart Marketing & Talent Solutions",
+  tagline: "Award-Winning Brand Activation & Field Marketing Agency",
   
   // Contact Information
   contact: {
@@ -52,3 +52,24 @@ export const COMPANY_INFO = {
 
 export const HR_EMAIL = "hr@localhostlimitedafrica.com";
 export const MARKETING_EMAIL = "marketing@localhostlimitedafrica.com";
+
+// Company Description
+export const COMPANY_DESCRIPTION = "Localhost Limited is an award-winning brand activation and field marketing agency based in Nairobi, Kenya. Founded in 2017, we deliver innovative marketing solutions that drive business growth and strengthen brand presence in competitive markets.";
+
+// Company Services
+export const SERVICES = [
+  "Brand Activation",
+  "BTL & Experiential Marketing",
+  "Field Marketing & Execution",
+  "Route to Market",
+  "Retail Campaigns",
+  "Printing & Branding",
+  "Video Production",
+  "Market Research & Consulting",
+];
+
+// Company Awards
+export const AWARDS = [
+  { year: 2020, title: "Best Marketing Agency", organization: "DigiSoko Awards" },
+  { year: 2019, title: "Best e-Commerce Agency in Tanzania", organization: "Tanzania Marketing Awards" },
+];
