@@ -44,7 +44,7 @@ export default function CMSDashboard() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/LL1-logo-2_8137895a.png"
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/logo_482f18a6.png"
               alt="Localhost Limited"
               className="h-10 w-auto"
             />

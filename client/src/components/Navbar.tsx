@@ -52,7 +52,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" aria-label="Localhost Limited — Home">
           <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/LL1-logo-2_8137895a.png"
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/logo_482f18a6.png"
             alt="Localhost Limited Logo"
             className="h-10 md:h-12 w-auto transition-transform duration-300 hover:scale-105"
           />

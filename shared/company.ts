@@ -6,6 +6,7 @@
 export const COMPANY_INFO = {
   name: "Localhost Limited",
   tagline: "Award-Winning Brand Activation & Field Marketing Agency",
+  logo: "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/logo_482f18a6.png",
   
   // Contact Information
   contact: {
@@ -48,6 +49,9 @@ export const COMPANY_INFO = {
     white: "#FFFFFF",
     darkNavy: "#0A1628",
   },
+  
+  // Logo
+  logoUrl: "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/logo_482f18a6.png",
 };
 
 export const HR_EMAIL = "hr@localhostlimitedafrica.com";
