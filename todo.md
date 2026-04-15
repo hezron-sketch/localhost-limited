@@ -60,3 +60,16 @@
 - [x] Implement email notification to HR email (hr@localhostlimitedafrica.com)
 - [x] Test application submission end-to-end (15/15 tests passing)
 - [x] Verify email notifications are sent (Resend API integration complete)
+
+
+## Bug Fixes - Phase 2: Performance, UX, and Email
+
+- [ ] Optimize jobs page loading performance with pagination and caching
+- [ ] Group services under Marketing, HR Sourcing, and Organizational categories
+- [ ] Prevent duplicate job applications from same email
+- [ ] Fix footer logo to match header logo
+- [ ] Improve home page client stories readability (remove transparency effects)
+- [ ] Update home page masthead with correct location (Nairobi, Kenya) and establishment year (2016)
+- [ ] Set up SMTP credentials for noreply@localhostlimitedafrica.com
+- [ ] Send applicant confirmation emails to applicants
+- [ ] Test all fixes and verify functionality

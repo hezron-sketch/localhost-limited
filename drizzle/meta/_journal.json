@@ -43,6 +43,13 @@
       "when": 1776232916354,
       "tag": "0005_easy_ted_forrester",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1776252763539,
+      "tag": "0006_yummy_nighthawk",
+      "breakpoints": true
     }
   ]
 }

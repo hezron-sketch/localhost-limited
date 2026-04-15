@@ -1,16 +1,10 @@
 /**
  * Services Page — Localhost Limited
  * Design: Premium B2B SaaS / Refined Dark Corporate
- * Sections:
- *   1. Hero — page header
- *   2. Brand Activation Services
- *   3. BTL & Experiential Services
- *   4. Field Marketing Services
- *   5. Printing & Branding Services
- *   6. Video Production Services
- *   7. Market Research & Consulting Services
- *   8. Our Strategy Section
- *   9. CTA
+ * Services organized into three main categories:
+ *   1. Marketing Services (Brand Activation, BTL, Field Marketing, Printing & Branding, Video Production, Market Research)
+ *   2. HR Sourcing Services
+ *   3. Organizational Services (Partnerships, Events)
  */
 
 import { Link } from "wouter";
@@ -28,6 +22,8 @@ import {
   TrendingUp,
   Check,
   Lightbulb,
+  Briefcase,
+  Handshake,
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import ServiceCard from "@/components/ServiceCard";
@@ -37,10 +33,14 @@ import ScrollReveal, { ScrollRevealGroup } from "@/components/ScrollReveal";
 
 const SERVICES_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/services-bg-8Q3voRTxHkWeXjcMVBCnue.webp";
 
-const brandActivationServices = [
+// ═══════════════════════════════════════════════════════════════════════════════
+// MARKETING SERVICES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const marketingServices = [
   {
     icon: Sparkles,
-    title: "Promotional Events",
+    title: "Brand Activation",
     description: "Immersive brand experiences that captivate audiences and create lasting connections. From product launches to brand activations.",
     benefits: [
       "Event strategy & planning",
@@ -51,278 +51,181 @@ const brandActivationServices = [
     ],
   },
   {
-    icon: Users,
-    title: "Mass Awareness Campaigns",
-    description: "Large-scale brand mobilization campaigns that expand market reach and increase visibility across key demographics.",
-    benefits: [
-      "Campaign conceptualization",
-      "Multi-channel execution",
-      "Audience sampling & engagement",
-      "Brand message amplification",
-      "Campaign performance tracking",
-    ],
-  },
-  {
-    icon: Target,
-    title: "Brand Activation Strategy",
-    description: "Strategic planning and execution of brand activation initiatives that drive consumer engagement and brand loyalty.",
-    benefits: [
-      "Market research & insights",
-      "Activation strategy development",
-      "Creative concept development",
-      "Execution coordination",
-      "ROI measurement",
-    ],
-  },
-];
-
-const btlServices = [
-  {
     icon: Zap,
-    title: "Retail Campaigns",
-    description: "Strategic retail activations that drive product visibility, consumer engagement, and point-of-sale conversion.",
+    title: "BTL & Experiential Marketing",
+    description: "Below-the-line campaigns that drive direct consumer engagement and build meaningful brand interactions.",
     benefits: [
-      "Retail strategy development",
-      "In-store promotions & displays",
-      "Shelf management optimization",
-      "Consumer sampling programs",
-      "Sales performance tracking",
+      "Experiential event design",
+      "Consumer engagement activities",
+      "Brand promotion execution",
+      "Corporate events management",
+      "Sampling & demonstration campaigns",
     ],
   },
   {
     icon: MapPin,
-    title: "Route to Market",
-    description: "Comprehensive field marketing solutions that connect products with consumers through strategic retail partnerships and distribution.",
+    title: "Field Marketing & Route to Market",
+    description: "Strategic field execution that brings your brand directly to consumers through retail campaigns and road shows.",
     benefits: [
-      "Distributor & retailer engagement",
-      "Product placement optimization",
-      "Field team coordination",
-      "Market penetration strategies",
-      "Distribution performance monitoring",
+      "Route-to-market strategy",
+      "Retail activation campaigns",
+      "Road shows & mobile tours",
+      "Field team management",
+      "Territory coverage optimization",
+    ],
+  },
+  {
+    icon: Palette,
+    title: "Printing & Branding",
+    description: "Complete branding solutions including graphic design, photography, printing, and billboard advertising.",
+    benefits: [
+      "Graphic design & creative",
+      "Professional photography",
+      "Print production & management",
+      "Billboard & outdoor advertising",
+      "Brand collateral design",
+    ],
+  },
+  {
+    icon: Film,
+    title: "Video Production",
+    description: "Professional video content creation for advertising, product promotion, and brand storytelling.",
+    benefits: [
+      "Script writing & conceptualization",
+      "Professional filming & production",
+      "Video editing & post-production",
+      "Advertising content creation",
+      "Social media video optimization",
+    ],
+  },
+  {
+    icon: BarChart2,
+    title: "Market Research & Consulting",
+    description: "Data-driven insights and strategic consulting to inform your marketing decisions and business growth.",
+    benefits: [
+      "Market data collection",
+      "Consumer behavior analysis",
+      "Competitor analysis",
+      "Market trend identification",
+      "Strategic recommendations",
+    ],
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HR SOURCING SERVICES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const hrServices = [
+  {
+    icon: Users,
+    title: "Talent Acquisition",
+    description: "End-to-end recruitment solutions to find and hire the right talent for your organization.",
+    benefits: [
+      "Job posting & advertising",
+      "Candidate screening & shortlisting",
+      "Interview coordination",
+      "Background verification",
+      "Onboarding support",
+    ],
+  },
+  {
+    icon: Briefcase,
+    title: "Recruitment Outsourcing",
+    description: "Full recruitment management services to handle your hiring needs efficiently and cost-effectively.",
+    benefits: [
+      "Complete recruitment management",
+      "Dedicated recruitment team",
+      "Candidate database access",
+      "Recruitment analytics",
+      "Time-to-hire optimization",
     ],
   },
   {
     icon: TrendingUp,
-    title: "Consumer Promotion",
-    description: "Targeted consumer promotion programs that drive trial, repeat purchase, and brand advocacy.",
+    title: "Workforce Solutions",
+    description: "Strategic workforce planning and staffing solutions to scale your business effectively.",
     benefits: [
-      "Promotion design & mechanics",
-      "Consumer incentive programs",
-      "Loyalty building initiatives",
-      "Promotional campaign execution",
-      "Consumer feedback collection",
+      "Workforce planning",
+      "Temporary staffing",
+      "Contract staffing",
+      "Skills assessment",
+      "Employee retention strategies",
     ],
   },
 ];
 
-const fieldMarketingServices = [
+// ═══════════════════════════════════════════════════════════════════════════════
+// ORGANIZATIONAL SERVICES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const organizationalServices = [
   {
-    icon: Users,
-    title: "Field Team Execution",
-    description: "Experienced field teams that execute promotions, activations, and campaigns with precision and market insight.",
+    icon: Handshake,
+    title: "Strategic Partnerships",
+    description: "Facilitate meaningful partnerships between corporates, startups, and agencies to drive mutual growth.",
     benefits: [
-      "Trained field personnel",
-      "On-ground execution",
-      "Real-time performance monitoring",
-      "Consumer interaction management",
-      "Field reporting & analytics",
+      "Partnership identification",
+      "Relationship facilitation",
+      "Deal structuring",
+      "Collaboration management",
+      "Partnership optimization",
     ],
   },
   {
     icon: Target,
-    title: "Road Shows & Activations",
-    description: "Mobile brand experiences that bring your products and services directly to target consumers in key markets.",
+    title: "Event Organization",
+    description: "End-to-end event management for conferences, seminars, workshops, and corporate gatherings.",
     benefits: [
-      "Route planning & logistics",
-      "Activation setup & execution",
-      "Consumer engagement activities",
-      "Product demonstration",
-      "Lead capture & follow-up",
-    ],
-  },
-  {
-    icon: BarChart2,
-    title: "Performance Monitoring",
-    description: "Real-time tracking and optimization of field marketing activities to ensure maximum impact and ROI.",
-    benefits: [
-      "Campaign performance tracking",
-      "Consumer behavior analysis",
-      "Market feedback collection",
-      "Strategy optimization",
-      "Detailed performance reporting",
+      "Event planning & coordination",
+      "Venue management",
+      "Vendor coordination",
+      "Attendee management",
+      "Post-event reporting",
     ],
   },
 ];
 
-const printingBrandingServices = [
-  {
-    icon: Palette,
-    title: "Graphic Design",
-    description: "Creative graphic design services that bring your brand vision to life across all marketing materials.",
-    benefits: [
-      "Brand identity design",
-      "Marketing collateral design",
-      "Digital & print assets",
-      "Brand guideline development",
-      "Design revisions & refinement",
-    ],
-  },
-  {
-    icon: Sparkles,
-    title: "Printing Services",
-    description: "High-quality printing solutions for billboards, banners, brochures, and promotional materials.",
-    benefits: [
-      "Billboard design & printing",
-      "Promotional material printing",
-      "Packaging design & printing",
-      "Large format printing",
-      "Quality assurance & delivery",
-    ],
-  },
-  {
-    icon: Users,
-    title: "Photography Services",
-    description: "Professional photography for product shots, events, and brand content that captures your story.",
-    benefits: [
-      "Product photography",
-      "Event documentation",
-      "Brand photography sessions",
-      "Photo editing & retouching",
-      "Digital asset delivery",
-    ],
-  },
-];
-
-const videoProductionServices = [
-  {
-    icon: Film,
-    title: "Video Production",
-    description: "Professional video production services from concept to final delivery for advertising and promotional content.",
-    benefits: [
-      "Concept development & scripting",
-      "Professional filming",
-      "Post-production editing",
-      "Motion graphics & animation",
-      "Multi-format delivery",
-    ],
-  },
-  {
-    icon: Sparkles,
-    title: "Advertising Content",
-    description: "Compelling advertising videos designed to capture attention and drive consumer action.",
-    benefits: [
-      "Ad concept development",
-      "Storyboarding & scripting",
-      "Professional production",
-      "Color grading & effects",
-      "Platform-optimized formats",
-    ],
-  },
-  {
-    icon: Target,
-    title: "Scriptwriting",
-    description: "Professional scriptwriting that crafts compelling narratives for your brand and campaigns.",
-    benefits: [
-      "Commercial script development",
-      "Brand storytelling",
-      "Dialogue & narration writing",
-      "Script revisions & refinement",
-      "Production-ready scripts",
-    ],
-  },
-];
-
-const marketResearchServices = [
-  {
-    icon: Lightbulb,
-    title: "Market Research",
-    description: "Deep market research and consumer insights that inform strategic decision-making and campaign development.",
-    benefits: [
-      "Consumer behavior analysis",
-      "Market trend identification",
-      "Competitor activity tracking",
-      "Pricing & positioning analysis",
-      "Research reports & insights",
-    ],
-  },
-  {
-    icon: BarChart2,
-    title: "Retail Insights",
-    description: "On-the-ground retail intelligence that helps optimize product placement, pricing, and promotional strategies.",
-    benefits: [
-      "Retail environment analysis",
-      "Shelf space optimization",
-      "Competitor benchmarking",
-      "Consumer purchase behavior",
-      "Actionable recommendations",
-    ],
-  },
-  {
-    icon: Target,
-    title: "Strategic Consulting",
-    description: "Expert consulting services that help brands develop winning marketing and go-to-market strategies.",
-    benefits: [
-      "Strategy development",
-      "Market entry planning",
-      "Campaign strategy consulting",
-      "Performance optimization",
-      "Executive presentations",
-    ],
-  },
-];
+// ═══════════════════════════════════════════════════════════════════════════════
+// STRATEGY STEPS
+// ═══════════════════════════════════════════════════════════════════════════════
 
 const strategySteps = [
   {
-    step: "01",
-    icon: Target,
+    number: "01",
     title: "Market Insight",
-    desc: "We conduct deep market research to understand consumer behavior, retail trends, and competitive activity.",
+    description: "We begin by understanding your market, competitors, and target audience through comprehensive research and analysis.",
   },
   {
-    step: "02",
-    icon: Sparkles,
+    number: "02",
     title: "Strategic Planning",
-    desc: "We develop targeted marketing and activation strategies aligned with your business goals.",
+    description: "We develop a tailored strategy that aligns with your business goals and market opportunities.",
   },
   {
-    step: "03",
-    icon: Users,
+    number: "03",
     title: "Field Execution",
-    desc: "Our experienced teams execute campaigns with precision, delivering results on the ground.",
+    description: "Our experienced teams execute campaigns with precision and excellence across all touchpoints.",
   },
   {
-    step: "04",
-    icon: BarChart2,
+    number: "04",
     title: "Performance Monitoring",
-    desc: "We track campaign performance and market feedback to optimize strategies and drive measurable results.",
+    description: "We continuously track results and optimize campaigns to ensure maximum ROI and impact.",
   },
-];
-
-const serviceBenefits = [
-  "Award-winning creative and execution expertise",
-  "Experienced field teams across East Africa",
-  "Data-driven strategy and optimization",
-  "Comprehensive service offerings under one roof",
-  "Transparent reporting and measurable ROI",
-  "Dedicated account management",
 ];
 
 export default function Services() {
   return (
     <PageLayout
       title="Services"
-      description="Explore Localhost Limited's comprehensive marketing services: Brand Activation, BTL, Field Marketing, Printing & Branding, and Video Production."
+      description="Comprehensive marketing, HR sourcing, and organizational services designed to drive growth and excellence."
     >
       {/* ─── Hero ─── */}
-      <section
-        className="relative pt-32 pb-20 overflow-hidden"
-        aria-label="Services page hero"
-      >
+      <section className="relative pt-32 pb-20 overflow-hidden" aria-label="Services page hero">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25"
           style={{ backgroundImage: `url(${SERVICES_BG})` }}
           role="img"
-          aria-label="Abstract digital circuit board background"
+          aria-label="Abstract background"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/70 via-[#0D1B2A]/85 to-[#0D1B2A]" />
         <div className="container mx-auto relative z-10">
@@ -332,319 +235,166 @@ export default function Services() {
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 max-w-3xl"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              Services Built for{" "}
-              <span className="gradient-text">Brand Impact</span>
+              Comprehensive Solutions for <span className="gradient-text">Business Growth</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl leading-relaxed">
-              From brand activation and BTL marketing to field execution and creative production — our integrated services deliver measurable results across all channels.
+              From brand activation to talent acquisition, we provide end-to-end solutions across marketing, HR, and organizational services.
             </p>
           </AnimatedSection>
-
-          {/* Quick Nav */}
-          <AnimatedSection delay={150} className="mt-8">
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="#activation"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-sm font-medium hover:bg-[#22C55E]/15 transition-all duration-200"
-                aria-label="Jump to Brand Activation"
-              >
-                <Sparkles className="w-4 h-4" aria-hidden="true" />
-                Brand Activation
-              </a>
-              <a
-                href="#btl"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-sm font-medium hover:bg-[#22C55E]/15 transition-all duration-200"
-                aria-label="Jump to BTL & Experiential"
-              >
-                <Zap className="w-4 h-4" aria-hidden="true" />
-                BTL & Experiential
-              </a>
-              <a
-                href="#field"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-sm font-medium hover:bg-[#22C55E]/15 transition-all duration-200"
-                aria-label="Jump to Field Marketing"
-              >
-                <MapPin className="w-4 h-4" aria-hidden="true" />
-                Field Marketing
-              </a>
-            </div>
-          </AnimatedSection>
         </div>
       </section>
 
-      {/* ─── Brand Activation Services ─── */}
-      <section className="py-20 md:py-28" id="activation" aria-labelledby="activation-heading">
+      {/* ═══════════════════════════════════════════════════════════════════════════════ */}
+      {/* MARKETING SERVICES */}
+      {/* ═══════════════════════════════════════════════════════════════════════════════ */}
+      <section className="py-20 bg-[#060E1A]" aria-labelledby="marketing-heading">
         <div className="container mx-auto">
           <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">Core Service</p>
+            <div className="mb-16">
+              <p className="section-label mb-3">Marketing Excellence</p>
               <h2
-                id="activation-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
+                id="marketing-heading"
+                className="text-4xl md:text-5xl font-extrabold text-white mb-5 max-w-3xl"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                Brand Activation
+                Marketing Services
               </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                Immersive brand experiences that captivate audiences and create lasting connections with your target market.
+              <p className="text-white/60 text-lg max-w-2xl">
+                Drive brand awareness, engagement, and growth through our comprehensive marketing solutions.
               </p>
             </div>
           </AnimatedSection>
 
-          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {brandActivationServices.map((service, i) => (
-              <div key={service.title}>
-                <ServiceCard {...service} />
-              </div>
-            ))}
+          <ScrollRevealGroup>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {marketingServices.map((service, index) => (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <ServiceCard {...service} />
+                </ScrollReveal>
+              ))}
+            </div>
           </ScrollRevealGroup>
         </div>
       </section>
 
-      {/* ─── BTL & Experiential Services ─── */}
-      <section className="py-20 md:py-28 bg-[#060E1A]" id="btl" aria-labelledby="btl-heading">
+      {/* ═══════════════════════════════════════════════════════════════════════════════ */}
+      {/* HR SOURCING SERVICES */}
+      {/* ═══════════════════════════════════════════════════════════════════════════════ */}
+      <section className="py-20 bg-[#0D1B2A]" aria-labelledby="hr-heading">
         <div className="container mx-auto">
           <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">Core Service</p>
+            <div className="mb-16">
+              <p className="section-label mb-3">Talent Solutions</p>
               <h2
-                id="btl-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
+                id="hr-heading"
+                className="text-4xl md:text-5xl font-extrabold text-white mb-5 max-w-3xl"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                BTL & Experiential Marketing
+                HR Sourcing Services
               </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                Below-the-line marketing that drives consumer engagement, retail activation, and conversion at point of sale.
+              <p className="text-white/60 text-lg max-w-2xl">
+                Find and develop the right talent to build a strong, capable team.
               </p>
             </div>
           </AnimatedSection>
 
-          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {btlServices.map((service, i) => (
-              <div key={service.title}>
-                <ServiceCard {...service} />
-              </div>
-            ))}
+          <ScrollRevealGroup>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hrServices.map((service, index) => (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <ServiceCard {...service} />
+                </ScrollReveal>
+              ))}
+            </div>
           </ScrollRevealGroup>
         </div>
       </section>
 
-      {/* ─── Field Marketing Services ─── */}
-      <section className="py-20 md:py-28" id="field" aria-labelledby="field-heading">
+      {/* ═══════════════════════════════════════════════════════════════════════════════ */}
+      {/* ORGANIZATIONAL SERVICES */}
+      {/* ═══════════════════════════════════════════════════════════════════════════════ */}
+      <section className="py-20 bg-[#060E1A]" aria-labelledby="org-heading">
         <div className="container mx-auto">
           <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">Core Service</p>
+            <div className="mb-16">
+              <p className="section-label mb-3">Strategic Initiatives</p>
               <h2
-                id="field-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
+                id="org-heading"
+                className="text-4xl md:text-5xl font-extrabold text-white mb-5 max-w-3xl"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                Field Marketing & Execution
+                Organizational Services
               </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                Experienced field teams executing promotions, activations, and campaigns with precision and market insight.
+              <p className="text-white/60 text-lg max-w-2xl">
+                Build strategic partnerships and organize impactful events that drive business success.
               </p>
             </div>
           </AnimatedSection>
 
-          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {fieldMarketingServices.map((service, i) => (
-              <div key={service.title}>
-                <ServiceCard {...service} />
-              </div>
-            ))}
-          </ScrollRevealGroup>
-        </div>
-      </section>
-
-      {/* ─── Printing & Branding Services ─── */}
-      <section className="py-20 md:py-28 bg-[#060E1A]" aria-labelledby="printing-heading">
-        <div className="container mx-auto">
-          <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">Creative Services</p>
-              <h2
-                id="printing-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
-                style={{ fontFamily: "'Syne', sans-serif" }}
-              >
-                Printing & Branding
-              </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                Professional design, printing, and photography services that bring your brand vision to life.
-              </p>
+          <ScrollRevealGroup>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+              {organizationalServices.map((service, index) => (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <ServiceCard {...service} />
+                </ScrollReveal>
+              ))}
             </div>
-          </AnimatedSection>
-
-          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {printingBrandingServices.map((service, i) => (
-              <div key={service.title}>
-                <ServiceCard {...service} />
-              </div>
-            ))}
-          </ScrollRevealGroup>
-        </div>
-      </section>
-
-      {/* ─── Video Production Services ─── */}
-      <section className="py-20 md:py-28" aria-labelledby="video-heading">
-        <div className="container mx-auto">
-          <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">Creative Services</p>
-              <h2
-                id="video-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
-                style={{ fontFamily: "'Syne', sans-serif" }}
-              >
-                Video Production
-              </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                Professional video production from concept to delivery for advertising and promotional content.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {videoProductionServices.map((service, i) => (
-              <div key={service.title}>
-                <ServiceCard {...service} />
-              </div>
-            ))}
-          </ScrollRevealGroup>
-        </div>
-      </section>
-
-      {/* ─── Market Research & Consulting Services ─── */}
-      <section className="py-20 md:py-28" aria-labelledby="research-heading">
-        <div className="container mx-auto">
-          <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">Strategic Services</p>
-              <h2
-                id="research-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
-                style={{ fontFamily: "'Syne', sans-serif" }}
-              >
-                Market Research & Consulting
-              </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                Deep market insights and strategic consulting that inform winning campaigns and business decisions.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <ScrollRevealGroup staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {marketResearchServices.map((service, i) => (
-              <div key={service.title}>
-                <ServiceCard {...service} />
-              </div>
-            ))}
           </ScrollRevealGroup>
         </div>
       </section>
 
       {/* ─── Our Strategy ─── */}
-      <section className="py-20 md:py-28 bg-[#060E1A]" aria-labelledby="strategy-heading">
+      <section className="py-20 bg-[#0D1B2A]" aria-labelledby="strategy-heading">
         <div className="container mx-auto">
           <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-label mb-3">How We Work</p>
+            <div className="text-center mb-16">
+              <p className="section-label mb-3">Our Approach</p>
               <h2
                 id="strategy-heading"
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4"
+                className="text-4xl md:text-5xl font-extrabold text-white mb-5"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                Our Strategy & Process
+                Our Proven Strategy
               </h2>
-              <p className="text-white/55 text-lg max-w-2xl mx-auto">
-                A proven approach that combines market insights, strategic planning, expert execution, and continuous optimization.
+              <p className="text-white/60 text-lg max-w-2xl mx-auto">
+                A systematic approach to deliver results at every stage of your project.
               </p>
             </div>
           </AnimatedSection>
 
-          <ScrollRevealGroup staggerDelay={0.15} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {strategySteps.map((item, i) => (
-              <div
-                key={i}
-                className="group relative p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-[#22C55E]/30 transition-all duration-300"
-              >
-                <div className="absolute -top-3 -left-3 w-12 h-12 rounded-lg bg-gradient-to-br from-[#22C55E] to-[#16a34a] flex items-center justify-center font-extrabold text-[#0D1B2A] text-lg">
-                  {item.step}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {strategySteps.map((step, index) => (
+              <ScrollReveal key={index} delay={index * 0.15}>
+                <div className="p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-[#22C55E]/50 transition-all duration-300">
+                  <div className="text-4xl font-extrabold text-[#22C55E] mb-4">{step.number}</div>
+                  <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
+                  <p className="text-white/60 leading-relaxed">{step.description}</p>
                 </div>
-                <div className="pt-6">
-                  <item.icon className="w-8 h-8 text-[#22C55E] mb-3" aria-hidden="true" />
-                  <h3 className="text-lg font-extrabold text-white mb-2">{item.title}</h3>
-                  <p className="text-white/55 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
-          </ScrollRevealGroup>
-        </div>
-      </section>
-
-      {/* ─── Why Choose Us ─── */}
-      <section className="py-20 md:py-28" aria-labelledby="benefits-heading">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-            <AnimatedSection>
-              <p className="section-label mb-3">Why Localhost Limited</p>
-              <h2
-                id="benefits-heading"
-                className="text-3xl md:text-4xl font-extrabold text-white mb-5"
-                style={{ fontFamily: "'Syne', sans-serif" }}
-              >
-                Comprehensive Solutions, Proven Results
-              </h2>
-              <p className="text-white/55 leading-relaxed mb-8">
-                We bring together all the services you need under one roof — from strategic planning to creative execution to field implementation. This integrated approach ensures consistency, efficiency, and measurable results.
-              </p>
-              <Link href="/contact">
-                <span className="btn-green inline-flex items-center gap-2 px-6 py-3">
-                  Get Started
-                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </span>
-              </Link>
-            </AnimatedSection>
-
-            <ScrollRevealGroup staggerDelay={0.1} className="space-y-4">
-              {serviceBenefits.map((benefit, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-[#22C55E] flex-shrink-0 mt-0.5" aria-hidden="true" />
-                  <p className="text-white/70">{benefit}</p>
-                </div>
-              ))}
-            </ScrollRevealGroup>
           </div>
         </div>
       </section>
 
-      {/* ─── CTA Banner ─── */}
-      <section className="py-20 md:py-28 bg-gradient-to-r from-[#22C55E]/20 via-[#22C55E]/10 to-transparent border-t border-b border-[#22C55E]/20" aria-labelledby="cta-heading">
+      {/* ─── CTA ─── */}
+      <section className="py-20 bg-[#060E1A]" aria-labelledby="cta-heading">
         <div className="container mx-auto">
-          <AnimatedSection className="text-center">
-            <h2
-              id="cta-heading"
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
-              Ready to Transform Your Brand?
-            </h2>
-            <p className="text-white/60 text-lg mb-8 max-w-2xl mx-auto">
-              Let's discuss how our integrated marketing services can drive growth and deliver measurable results for your business.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
+          <AnimatedSection>
+            <div className="text-center">
+              <h2
+                id="cta-heading"
+                className="text-4xl md:text-5xl font-extrabold text-white mb-6"
+                style={{ fontFamily: "'Syne', sans-serif" }}
+              >
+                Ready to Work With Us?
+              </h2>
+              <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
+                Let's discuss how our services can help drive your business growth and success.
+              </p>
               <Link href="/contact">
-                <span className="btn-green inline-flex items-center gap-2 px-7 py-3">
-                  Start a Conversation
-                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </span>
-              </Link>
-              <Link href="/about">
-                <span className="btn-outline-green inline-flex items-center gap-2 px-7 py-3">
-                  Learn More About Us
+                <span className="btn-green inline-flex items-center gap-2">
+                  Get in Touch
+                  <ArrowRight className="w-4 h-4" />
                 </span>
               </Link>
             </div>

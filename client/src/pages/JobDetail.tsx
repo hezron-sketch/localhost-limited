@@ -101,6 +101,7 @@ export default function JobDetail() {
         phone: formData.phone,
         cvUrl,
         coverLetter: formData.coverLetter || undefined,
+        jobTitle: job?.title || "Job Position",
       });
 
       // Send email notification to HR with the uploaded CV URL

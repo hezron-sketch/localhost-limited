@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, unique } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -158,9 +158,28 @@ export const jobApplications = mysqlTable("jobApplications", {
   status: mysqlEnum("status", ["pending", "reviewed", "accepted", "rejected"]).default("pending").notNull(),
   appliedAt: timestamp("appliedAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
+}, (table) => ({
+  uniqueApplication: unique("unique_job_email").on(table.jobId, table.email),
+}));
 
 export type JobApplication = typeof jobApplications.$inferSelect;
 export type InsertJobApplication = typeof jobApplications.$inferInsert;
+
+/**
+ * Application Status Audit Log
+ * Tracks changes to application status for HR review purposes
+ */
+export const applicationStatusLog = mysqlTable("applicationStatusLog", {
+  id: int("id").autoincrement().primaryKey(),
+  applicationId: int("applicationId").notNull(),
+  previousStatus: mysqlEnum("previousStatus", ["pending", "reviewed", "accepted", "rejected"]).notNull(),
+  newStatus: mysqlEnum("newStatus", ["pending", "reviewed", "accepted", "rejected"]).notNull(),
+  changedBy: varchar("changedBy", { length: 255 }),
+  notes: text("notes"),
+  changedAt: timestamp("changedAt").defaultNow().notNull(),
+});
+
+export type ApplicationStatusLog = typeof applicationStatusLog.$inferSelect;
+export type InsertApplicationStatusLog = typeof applicationStatusLog.$inferInsert;
 
 // TODO: Add additional tables as needed

@@ -50,19 +50,13 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" aria-label="Localhost Limited — Home">
-              <div className="flex items-center gap-2 mb-5 group w-fit">
-                <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#22C55E] to-[#4ADE80] flex items-center justify-center shadow-[0_0_12px_rgba(34,197,94,0.4)] group-hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] transition-all duration-300">
-                  <Zap className="w-4 h-4 text-[#0A1628]" strokeWidth={2.5} />
-                </div>
-                <span
-                  className="font-bold text-lg text-white tracking-tight"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
-                >
-                  Localhost<span className="text-[#22C55E]">.</span>
-                </span>
-              </div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD5uiUvbbu4scddhrb/LL1-logo-2_8137895a.png"
+                alt="Localhost Limited Logo"
+                className="h-10 w-auto mb-5 transition-transform duration-300 hover:scale-105"
+              />
             </Link>
-            <p className="text-white/55 text-sm leading-relaxed mb-6">
+            <p className="text-white/60 text-sm leading-relaxed mb-6">
               Empowering businesses through smart marketing strategies, expert HR sourcing, and strategic partnerships.
             </p>
             {/* Social Links */}

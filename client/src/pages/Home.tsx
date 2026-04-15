@@ -318,7 +318,7 @@ export default function Home() {
                 <Card3D
                   title={t.name}
                   description={t.quote}
-                  gradient="from-blue-500/20 to-blue-500/5"
+                  gradient="from-blue-500/30 to-blue-500/20"
                 >
                   <div className="flex items-center justify-between mt-4">
                     <div>

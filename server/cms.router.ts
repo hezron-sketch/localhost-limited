@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
+import { sendApplicationConfirmationEmail, sendHRNotificationEmail } from "./_core/smtp";
 import {
   createJobOpening,
   listJobOpenings,
@@ -48,9 +49,8 @@ export const jobsRouter = router({
       location: z.string().min(1),
       salaryRange: z.string().optional(),
       jobType: z.enum(["full-time", "part-time", "contract", "remote"]),
-      requirements: z.string().optional(),
+      requirements: z.string().min(1),
       benefits: z.string().optional(),
-      imageUrl: z.string().optional(),
     }))
     .mutation(async ({ input }) => createJobOpening(input)),
 
@@ -65,13 +65,8 @@ export const jobsRouter = router({
       jobType: z.enum(["full-time", "part-time", "contract", "remote"]).optional(),
       requirements: z.string().optional(),
       benefits: z.string().optional(),
-      imageUrl: z.string().optional(),
-      status: z.enum(["active", "archived"]).optional(),
     }))
-    .mutation(async ({ input }) => {
-      const { id, ...data } = input;
-      return updateJobOpening(id, data);
-    }),
+    .mutation(async ({ input }) => updateJobOpening(input.id, input)),
 
   delete: adminProcedure
     .input(z.object({ id: z.number() }))
@@ -108,23 +103,19 @@ export const servicesRouter = router({
       benefits: z.string().optional(),
       imageUrl: z.string().optional(),
       price: z.string().optional(),
-      status: z.enum(["active", "archived"]).optional(),
     }))
-    .mutation(async ({ input }) => {
-      const { id, ...data } = input;
-      return updateMarketingService(id, data);
-    }),
+    .mutation(async ({ input }) => updateMarketingService(input.id, input)),
 
   delete: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => deleteMarketingService(input.id)),
 });
 
-// ============ Blog Posts Router ============
+// ============ Blog Router ============
 export const blogRouter = router({
   list: publicProcedure
-    .input(z.object({ limit: z.number().default(50), offset: z.number().default(0), category: z.string().optional() }))
-    .query(async ({ input }) => listBlogPosts(input.limit, input.offset, input.category)),
+    .input(z.object({ limit: z.number().default(50), offset: z.number().default(0) }))
+    .query(async ({ input }) => listBlogPosts(input.limit, input.offset)),
 
   getBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
@@ -139,15 +130,8 @@ export const blogRouter = router({
       category: z.enum(["organization", "hr-sourcing", "marketing", "partnerships"]),
       imageUrl: z.string().optional(),
       author: z.string().min(1),
-      status: z.enum(["draft", "published", "archived"]).default("draft"),
     }))
-    .mutation(async ({ input }) => {
-      const data = {
-        ...input,
-        publishedAt: input.status === "published" ? new Date() : null,
-      };
-      return createBlogPost(data);
-    }),
+    .mutation(async ({ input }) => createBlogPost(input)),
 
   update: adminProcedure
     .input(z.object({
@@ -159,23 +143,15 @@ export const blogRouter = router({
       category: z.enum(["organization", "hr-sourcing", "marketing", "partnerships"]).optional(),
       imageUrl: z.string().optional(),
       author: z.string().optional(),
-      status: z.enum(["draft", "published", "archived"]).optional(),
     }))
-    .mutation(async ({ input }) => {
-      const { id, ...data } = input;
-      const updateData = {
-        ...data,
-        publishedAt: data.status === "published" ? new Date() : undefined,
-      };
-      return updateBlogPost(id, updateData);
-    }),
+    .mutation(async ({ input }) => updateBlogPost(input.id, input)),
 
   delete: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => deleteBlogPost(input.id)),
 });
 
-// ============ Organization Partners Router ============
+// ============ Partners Router ============
 export const partnersRouter = router({
   list: publicProcedure
     .input(z.object({ limit: z.number().default(50), offset: z.number().default(0) }))
@@ -205,19 +181,15 @@ export const partnersRouter = router({
       website: z.string().optional(),
       logoUrl: z.string().optional(),
       benefits: z.string().optional(),
-      status: z.enum(["active", "inactive"]).optional(),
     }))
-    .mutation(async ({ input }) => {
-      const { id, ...data } = input;
-      return updateOrganizationPartner(id, data);
-    }),
+    .mutation(async ({ input }) => updateOrganizationPartner(input.id, input)),
 
   delete: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => deleteOrganizationPartner(input.id)),
 });
 
-// ============ Gallery Images Router ============
+// ============ Gallery Router ============
 export const galleryRouter = router({
   list: publicProcedure
     .input(z.object({ section: z.string().optional() }))
@@ -256,8 +228,45 @@ export const jobApplicationsRouter = router({
       phone: z.string().min(1),
       cvUrl: z.string().min(1),
       coverLetter: z.string().optional(),
+      jobTitle: z.string().min(1),
     }))
-    .mutation(async ({ input }) => createJobApplication(input)),
+    .mutation(async ({ input }) => {
+      const application = await createJobApplication({
+        jobId: input.jobId,
+        fullName: input.fullName,
+        email: input.email,
+        phone: input.phone,
+        cvUrl: input.cvUrl,
+        coverLetter: input.coverLetter,
+      });
+      
+      // Send confirmation email to applicant
+      try {
+        await sendApplicationConfirmationEmail(
+          input.email,
+          input.fullName,
+          input.jobTitle
+        );
+      } catch (error: any) {
+        console.error("[Application] Failed to send confirmation email:", error.message);
+      }
+      
+      // Send HR notification
+      try {
+        await sendHRNotificationEmail(
+          input.fullName,
+          input.email,
+          input.phone,
+          input.jobTitle,
+          input.cvUrl,
+          input.coverLetter
+        );
+      } catch (error: any) {
+        console.error("[Application] Failed to send HR notification:", error.message);
+      }
+      
+      return application;
+    }),
 
   updateStatus: adminProcedure
     .input(z.object({

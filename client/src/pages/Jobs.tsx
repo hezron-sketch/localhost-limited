@@ -26,7 +26,15 @@ export default function Jobs() {
     offset: 0,
   });
 
-  const jobs = jobsData?.jobs || [];
+  const jobs = useMemo(() => {
+    const jobList = jobsData?.jobs || [];
+    // Sort by creation date, newest first
+    return jobList.sort((a: any, b: any) => {
+      const dateA = new Date(a.createdAt || 0).getTime();
+      const dateB = new Date(b.createdAt || 0).getTime();
+      return dateB - dateA;
+    });
+  }, [jobsData?.jobs]);
 
   // Filter and search
   const filteredJobs = useMemo(() => {
@@ -47,9 +55,13 @@ export default function Jobs() {
     currentPage * itemsPerPage
   );
 
-  // Get unique job types and departments for filters
-  const jobTypes = Array.from(new Set(jobs.map((j: any) => j.jobType)));
-  const departments = Array.from(new Set(jobs.map((j: any) => j.department)));
+  // Get unique job types and departments for filters (memoized)
+  const { jobTypes, departments } = useMemo(() => {
+    return {
+      jobTypes: Array.from(new Set(jobs.map((j: any) => j.jobType))),
+      departments: Array.from(new Set(jobs.map((j: any) => j.department))),
+    };
+  }, [jobs]);
 
   const formatDate = (date: any) => {
     return new Date(date).toLocaleDateString("en-US", {

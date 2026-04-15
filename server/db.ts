@@ -1,4 +1,4 @@
-import { eq, desc, and } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission, jobOpenings, InsertJobOpening, JobOpening, marketingServices, InsertMarketingService, MarketingService, blogPosts, InsertBlogPost, BlogPost, organizationPartners, InsertOrganizationPartner, OrganizationPartner, galleryImages, InsertGalleryImage, GalleryImage, jobApplications, InsertJobApplication, JobApplication } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -405,6 +405,20 @@ export async function deleteGalleryImage(id: number) {
 export async function createJobApplication(data: InsertJobApplication): Promise<JobApplication> {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
+  
+  // Check for duplicate application (same email for same job)
+  const existing = await db.select().from(jobApplications)
+    .where(
+      and(
+        eq(jobApplications.jobId, data.jobId),
+        eq(jobApplications.email, data.email)
+      )
+    );
+  
+  if (existing.length > 0) {
+    throw new Error("You have already applied for this position. Please wait for our response.");
+  }
+  
   const result = await db.insert(jobApplications).values(data);
   const id = result[0].insertId as number;
   return getJobApplicationById(id) as Promise<JobApplication>;
