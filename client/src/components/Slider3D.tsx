@@ -67,57 +67,5 @@ export default function Slider3D({
     return distance > items.length / 2 ? distance - items.length : distance;
   };
 
-  return (
-    <div
-      className="relative w-full h-full perspective"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-      style={{ perspective: "1200px" }}
-    >
-
-
-      {/* Navigation Controls */}
-      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 py-6">
-        <motion.button
-          onClick={handlePrev}
-          whileHover={{ scale: 1.1, x: -4 }}
-          whileTap={{ scale: 0.9 }}
-          className="p-3 rounded-full bg-[#22C55E]/10 hover:bg-[#22C55E]/20 text-[#22C55E] transition-colors"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </motion.button>
-
-        {/* Dot Indicators */}
-        <div className="flex gap-2">
-          {items.map((_: typeof items[0], index: number) => (
-            <motion.button
-              key={index}
-              onClick={() => {
-                setDirection(index > currentIndex ? 1 : -1);
-                setCurrentIndex(index);
-              }}
-              className={`h-2 rounded-full transition-all ${
-                index === currentIndex
-                  ? "bg-[#22C55E] w-8"
-                  : "bg-white/20 w-2 hover:bg-white/40"
-              }`}
-              whileHover={{ scale: 1.2 }}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        <motion.button
-          onClick={handleNext}
-          whileHover={{ scale: 1.1, x: 4 }}
-          whileTap={{ scale: 0.9 }}
-          className="p-3 rounded-full bg-[#22C55E]/10 hover:bg-[#22C55E]/20 text-[#22C55E] transition-colors"
-          aria-label="Next slide"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </motion.button>
-      </div>
-    </div>
-  );
+  return null;
 }
