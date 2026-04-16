@@ -1,9 +1,9 @@
 /**
  * Jobs Page — Localhost Limited
- * Display all active job openings with search and filter capabilities
+ * Optimized for performance with server-side pagination
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Link } from "wouter";
 import { Search, MapPin, Briefcase, Calendar, ArrowRight, DollarSign } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
@@ -15,53 +15,35 @@ const JOBS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663530145352/A7XjKD
 
 export default function Jobs() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedJobType, setSelectedJobType] = useState<string | null>(null);
-  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 12; // Increased from 6 for better performance
 
-  // Fetch all active jobs
+  // Fetch only the current page of jobs (optimized)
   const { data: jobsData, isLoading, error } = trpc.cms.jobs.list.useQuery({
-    limit: 100,
-    offset: 0,
+    limit: itemsPerPage,
+    offset: (currentPage - 1) * itemsPerPage,
   });
 
-  const jobs = useMemo(() => {
-    const jobList = jobsData?.jobs || [];
-    // Sort by creation date, newest first
-    return jobList.sort((a: any, b: any) => {
-      const dateA = new Date(a.createdAt || 0).getTime();
-      const dateB = new Date(b.createdAt || 0).getTime();
-      return dateB - dateA;
-    });
-  }, [jobsData?.jobs]);
+  const jobs = jobsData?.jobs || [];
+  const totalJobs = jobsData?.total || 0;
+  const totalPages = Math.ceil(totalJobs / itemsPerPage);
 
-  // Filter and search
+  // Client-side search filtering (only on current page data)
   const filteredJobs = useMemo(() => {
-    return jobs.filter((job: any) => {
-      const matchesSearch =
-        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesJobType = !selectedJobType || job.jobType === selectedJobType;
-      const matchesDepartment = !selectedDepartment || job.department === selectedDepartment;
-      return matchesSearch && matchesJobType && matchesDepartment;
-    });
-  }, [jobs, searchTerm, selectedJobType, selectedDepartment]);
+    if (!searchTerm.trim()) return jobs;
+    
+    const term = searchTerm.toLowerCase();
+    return jobs.filter((job: any) =>
+      job.title.toLowerCase().includes(term) ||
+      job.description.toLowerCase().includes(term) ||
+      job.department.toLowerCase().includes(term)
+    );
+  }, [jobs, searchTerm]);
 
-  // Pagination
-  const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
-  const paginatedJobs = filteredJobs.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Get unique job types and departments for filters (memoized)
-  const { jobTypes, departments } = useMemo(() => {
-    return {
-      jobTypes: Array.from(new Set(jobs.map((j: any) => j.jobType))),
-      departments: Array.from(new Set(jobs.map((j: any) => j.department))),
-    };
-  }, [jobs]);
+  const handleSearch = useCallback((value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1); // Reset to first page on search
+  }, []);
 
   const formatDate = (date: any) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -105,86 +87,40 @@ export default function Jobs() {
         </div>
       </section>
 
-      {/* ─── Search & Filter ─── */}
+      {/* ─── Search ─── */}
       <section className="py-12 bg-[#060E1A]" aria-labelledby="search-heading">
         <div className="container mx-auto">
           <AnimatedSection>
             <h2 id="search-heading" className="sr-only">
-              Search and filter jobs
+              Search jobs
             </h2>
 
             {/* Search Bar */}
-            <div className="mb-8">
+            <div className="mb-6">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" aria-hidden="true" />
                 <input
                   type="text"
-                  placeholder="Search by job title or keywords..."
+                  placeholder="Search by job title, department, or keywords..."
                   value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1);
-                  }}
+                  onChange={(e) => handleSearch(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#22C55E]/50 focus:ring-1 focus:ring-[#22C55E]/30 transition-all duration-200"
                   aria-label="Search jobs"
                 />
               </div>
             </div>
 
-            {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Job Type Filter */}
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-2">
-                  Job Type
-                </label>
-                <select
-                  value={selectedJobType || ""}
-                  onChange={(e) => {
-                    setSelectedJobType(e.target.value || null);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#22C55E]/50 focus:ring-1 focus:ring-[#22C55E]/30 transition-all duration-200 appearance-none cursor-pointer"
-                  aria-label="Filter by job type"
-                >
-                  <option value="">All Job Types</option>
-                  {jobTypes.map((type: any) => (
-                    <option key={type} value={type}>
-                      {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Department Filter */}
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-2">
-                  Department
-                </label>
-                <select
-                  value={selectedDepartment || ""}
-                  onChange={(e) => {
-                    setSelectedDepartment(e.target.value || null);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#22C55E]/50 focus:ring-1 focus:ring-[#22C55E]/30 transition-all duration-200 appearance-none cursor-pointer"
-                  aria-label="Filter by department"
-                >
-                  <option value="">All Departments</option>
-                  {departments.map((dept: any) => (
-                    <option key={dept} value={dept}>
-                      {dept}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Results Count */}
-            <div className="mt-6 text-white/60 text-sm">
-              Showing {paginatedJobs.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to{" "}
-              {Math.min(currentPage * itemsPerPage, filteredJobs.length)} of{" "}
-              {filteredJobs.length} job{filteredJobs.length !== 1 ? "s" : ""}
+            {/* Results Info */}
+            <div className="text-white/60 text-sm">
+              {isLoading ? (
+                "Loading..."
+              ) : (
+                <>
+                  Showing {filteredJobs.length > 0 ? 1 : 0} to{" "}
+                  {Math.min(filteredJobs.length, itemsPerPage)} of{" "}
+                  {totalJobs} job{totalJobs !== 1 ? "s" : ""}
+                </>
+              )}
             </div>
           </AnimatedSection>
         </div>
@@ -206,124 +142,112 @@ export default function Jobs() {
             <div className="text-center py-12">
               <p className="text-red-400">Failed to load jobs. Please try again later.</p>
             </div>
-          ) : paginatedJobs.length === 0 ? (
+          ) : filteredJobs.length === 0 ? (
             <div className="text-center py-12">
               <Briefcase className="w-16 h-16 text-white/20 mx-auto mb-4" aria-hidden="true" />
-              <p className="text-white/60 text-lg">No jobs found matching your criteria.</p>
+              <p className="text-white/60 text-lg">
+                {searchTerm ? "No jobs found matching your search." : "No jobs available at the moment."}
+              </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {paginatedJobs.map((job: any, index: number) => (
-                <ScrollReveal key={job.id} delay={index * 100}>
-                  <Link href={`/jobs/${job.id}`}>
-                    <div className="group h-full p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-[#22C55E]/30 transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-[#22C55E]/10">
-                      {/* Job Title */}
-                      <h3 className="text-xl font-extrabold text-white mb-3 group-hover:text-[#22C55E] transition-colors">
-                        {job.title}
-                      </h3>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {filteredJobs.map((job: any, index: number) => (
+                  <ScrollReveal key={job.id} delay={index * 50}>
+                    <Link href={`/jobs/${job.id}`}>
+                      <div className="group h-full p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-[#22C55E]/30 transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-[#22C55E]/10">
+                        {/* Job Title */}
+                        <h3 className="text-xl font-extrabold text-white mb-3 group-hover:text-[#22C55E] transition-colors line-clamp-2">
+                          {job.title}
+                        </h3>
 
-                      {/* Meta Info */}
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-white/60 text-sm">
-                          <Briefcase className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                          <span>{job.department}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-white/60 text-sm">
-                          <MapPin className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                          <span>{job.location}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-white/60 text-sm">
-                          <Calendar className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                          <span>{formatDate(job.createdAt)}</span>
-                        </div>
-                        {job.salaryRange && (
+                        {/* Meta Info */}
+                        <div className="space-y-2 mb-4">
                           <div className="flex items-center gap-2 text-white/60 text-sm">
-                            <DollarSign className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                            <span>{job.salaryRange}</span>
+                            <Briefcase className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                            <span>{job.department}</span>
                           </div>
-                        )}
-                      </div>
+                          <div className="flex items-center gap-2 text-white/60 text-sm">
+                            <MapPin className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                            <span>{job.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/60 text-sm">
+                            <Calendar className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                            <span>{formatDate(job.createdAt)}</span>
+                          </div>
+                          {job.salaryRange && (
+                            <div className="flex items-center gap-2 text-white/60 text-sm">
+                              <DollarSign className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                              <span>{job.salaryRange}</span>
+                            </div>
+                          )}
+                        </div>
 
-                      {/* Job Type Badge */}
-                      <div className="mb-4">
-                        <span className="inline-block px-3 py-1 rounded-full bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-xs font-medium">
-                          {job.jobType.charAt(0).toUpperCase() + job.jobType.slice(1)}
-                        </span>
-                      </div>
+                        {/* Job Type Badge */}
+                        <div className="mb-4">
+                          <span className="inline-block px-3 py-1 rounded-full bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-xs font-medium">
+                            {job.jobType.charAt(0).toUpperCase() + job.jobType.slice(1)}
+                          </span>
+                        </div>
 
-                      {/* CTA */}
-                      <div className="flex items-center gap-2 text-[#22C55E] font-medium text-sm group-hover:gap-3 transition-all">
-                        View Details
-                        <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                        {/* CTA */}
+                        <div className="flex items-center gap-2 text-[#22C55E] text-sm font-medium group-hover:gap-3 transition-all">
+                          View Details
+                          <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </ScrollReveal>
-              ))}
-            </div>
+                    </Link>
+                  </ScrollReveal>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-12">
+                  <button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg border border-white/10 text-white/70 hover:text-white hover:border-[#22C55E]/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    aria-label="Previous page"
+                  >
+                    Previous
+                  </button>
+
+                  {/* Page Numbers */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      const pageNum = currentPage > 3 ? currentPage - 2 + i : i + 1;
+                      if (pageNum > totalPages) return null;
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`px-3 py-2 rounded-lg transition-all ${
+                            currentPage === pageNum
+                              ? "bg-[#22C55E] text-[#0D1B2A] font-medium"
+                              : "border border-white/10 text-white/70 hover:text-white hover:border-[#22C55E]/50"
+                          }`}
+                          aria-label={`Go to page ${pageNum}`}
+                          aria-current={currentPage === pageNum ? "page" : undefined}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg border border-white/10 text-white/70 hover:text-white hover:border-[#22C55E]/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    aria-label="Next page"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
           )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-12 flex items-center justify-center gap-2">
-              <button
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#22C55E]/30 transition-all"
-                aria-label="Previous page"
-              >
-                Previous
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`px-3 py-2 rounded-lg transition-all ${
-                    currentPage === page
-                      ? "bg-[#22C55E] text-[#0D1B2A] font-medium"
-                      : "bg-white/5 border border-white/10 text-white hover:border-[#22C55E]/30"
-                  }`}
-                  aria-label={`Go to page ${page}`}
-                  aria-current={currentPage === page ? "page" : undefined}
-                >
-                  {page}
-                </button>
-              ))}
-
-              <button
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#22C55E]/30 transition-all"
-                aria-label="Next page"
-              >
-                Next
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ─── CTA ─── */}
-      <section className="py-20 md:py-28 bg-gradient-to-r from-[#22C55E]/20 via-[#22C55E]/10 to-transparent border-t border-b border-[#22C55E]/20">
-        <div className="container mx-auto">
-          <AnimatedSection className="text-center">
-            <h2
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
-              Don't See Your Perfect Fit?
-            </h2>
-            <p className="text-white/60 text-lg mb-8 max-w-2xl mx-auto">
-              We're always looking for talented professionals. Send us your CV and let's explore opportunities together.
-            </p>
-            <Link href="/contact">
-              <span className="btn-green inline-flex items-center gap-2 px-7 py-3">
-                Get in Touch
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </span>
-            </Link>
-          </AnimatedSection>
         </div>
       </section>
     </PageLayout>
