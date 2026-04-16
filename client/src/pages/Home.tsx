@@ -125,7 +125,7 @@ export default function Home() {
             {/* Label */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 mb-6 animate-fade-in">
               <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] shadow-[0_0_6px_rgba(34,197,94,0.8)]" aria-hidden="true" />
-              <span className="section-label text-xs">Nairobi, Kenya — Est. 2016</span>
+              <span className="section-label text-xs">Dar es Salaam, Tanzania — Est. 2017</span>
             </div>
 
             {/* Headline */}
@@ -133,9 +133,7 @@ export default function Home() {
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 animate-fade-in-up"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              Empowering Growth Through{" "}
-              <span className="gradient-text">Brand Activation</span>{" "}
-              &amp; Field Excellence
+              Empowering Growth Business Growth
             </h1>
 
             {/* Subtext */}
