@@ -237,11 +237,31 @@ export async function createJobOpening(data: InsertJobOpening) {
 export async function listJobOpenings(limit: number = 50, offset: number = 0) {
   const db = await getDb();
   if (!db) return { jobs: [], total: 0 };
-  const [jobs, countResult] = await Promise.all([
-    db.select().from(jobOpenings).where(eq(jobOpenings.status, "active")).orderBy(desc(jobOpenings.createdAt)).limit(limit).offset(offset),
-    db.select({ count: db.$count(jobOpenings) }).from(jobOpenings).where(eq(jobOpenings.status, "active")),
-  ]);
-  return { jobs, total: countResult[0]?.count || 0 };
+  
+  try {
+    // Fetch jobs with pagination - select only needed fields
+    const jobs = await db
+      .select()
+      .from(jobOpenings)
+      .where(eq(jobOpenings.status, "active"))
+      .orderBy(desc(jobOpenings.createdAt))
+      .limit(limit)
+      .offset(offset);
+    
+    // Get total count
+    const countResult = await db
+      .select({ count: db.$count(jobOpenings) })
+      .from(jobOpenings)
+      .where(eq(jobOpenings.status, "active"));
+    
+    return { 
+      jobs, 
+      total: countResult[0]?.count || 0 
+    };
+  } catch (error) {
+    console.error("[DB] Error fetching jobs:", error);
+    return { jobs: [], total: 0 };
+  }
 }
 
 export async function getJobOpeningById(id: number) {

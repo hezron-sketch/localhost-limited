@@ -18,11 +18,17 @@ export default function Jobs() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12; // Increased from 6 for better performance
 
-  // Fetch only the current page of jobs (optimized)
-  const { data: jobsData, isLoading, error } = trpc.cms.jobs.list.useQuery({
-    limit: itemsPerPage,
-    offset: (currentPage - 1) * itemsPerPage,
-  });
+  // Fetch only the current page of jobs (optimized with caching)
+  const { data: jobsData, isLoading, error } = trpc.cms.jobs.list.useQuery(
+    {
+      limit: itemsPerPage,
+      offset: (currentPage - 1) * itemsPerPage,
+    },
+    {
+      staleTime: 5 * 60 * 1000, // 5 minutes - data is considered fresh
+      gcTime: 10 * 60 * 1000, // 10 minutes - cache garbage collection time
+    }
+  );
 
   const jobs = jobsData?.jobs || [];
   const totalJobs = jobsData?.total || 0;

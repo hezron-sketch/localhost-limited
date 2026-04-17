@@ -44,11 +44,10 @@ export default function JobForm({ onClose, editingId, onEditingChange, onSuccess
         description: formData.description,
         department: formData.department,
         location: formData.location,
-        salaryRange: formData.salaryRange || undefined,
+        salaryRange: formData.salaryRange || "",
         jobType: formData.jobType,
-        requirements: formData.requirements || undefined,
-        benefits: formData.benefits || undefined,
-        imageUrl: formData.imageUrl || undefined,
+        requirements: formData.requirements || "",
+        benefits: formData.benefits || "",
       });
       
       toast.success("Job opening created successfully!");

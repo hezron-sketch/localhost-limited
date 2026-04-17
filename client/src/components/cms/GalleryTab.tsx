@@ -13,10 +13,10 @@ export default function GalleryTab() {
   });
   const [uploading, setUploading] = useState(false);
 
-  const { data: gallery, isLoading, refetch } = trpc.cms.gallery.list.useQuery({
-    limit: 100,
-    offset: 0,
+  const { data: galleryData, isLoading, refetch } = trpc.cms.gallery.list.useQuery({
+    section: "other",
   });
+  const gallery = galleryData || [];
 
   const createMutation = trpc.cms.gallery.create.useMutation({
     onSuccess: () => {
@@ -97,13 +97,13 @@ export default function GalleryTab() {
           <Loader2 className="w-8 h-8 animate-spin text-[#22C55E] mx-auto" />
           <p className="text-white/60 mt-2">Loading gallery...</p>
         </div>
-      ) : !gallery?.gallery || gallery.gallery.length === 0 ? (
+      ) : !gallery || gallery.length === 0 ? (
         <div className="bg-[#0A1628] border border-white/10 rounded-lg p-8 text-center">
           <p className="text-white/60">No gallery items yet. Add one to get started!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {gallery.gallery.map((item: any) => (
+          {gallery.map((item: any) => (
             <div
               key={item.id}
               className="bg-[#0A1628] border border-white/10 rounded-lg overflow-hidden hover:border-[#22C55E]/30 transition-colors group"

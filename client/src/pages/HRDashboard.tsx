@@ -115,10 +115,10 @@ export default function HRDashboard() {
         description: formData.description,
         department: formData.department,
         location: formData.location,
-        salaryRange: formData.salaryRange || undefined,
+        salaryRange: formData.salaryRange || "",
         jobType: formData.jobType,
-        requirements: formData.requirements || undefined,
-        benefits: formData.benefits || undefined,
+        requirements: formData.requirements || "",
+        benefits: formData.benefits || "",
       });
     } catch (error) {
       console.error("Failed to create job:", error);
