@@ -103,8 +103,7 @@ export default function About() {
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 max-w-3xl"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              Driving Business Growth Through{" "}
-              <span className="gradient-text">Brand Activation & Field Excellence</span>
+              Driving growth by connecting brands to the right people
             </h1>
             <p className="text-white/60 text-lg max-w-2xl leading-relaxed">
               Founded in 2017, Localhost Limited was established with a clear vision: to drive business growth and strengthen brand presence in a competitive marketplace. We deliver innovative brand activation, BTL marketing, and field execution solutions that expand market reach, increase visibility, and connect brands with the right customers.
