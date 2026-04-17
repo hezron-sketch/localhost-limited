@@ -59,13 +59,17 @@ export const appRouter = router({
             content: `Email: ${input.email}\n\nMessage:\n${input.message}`,
           });
 
-          // Send detailed email notification to owner
+          // Send detailed email notification to both HR and info emails
           const ownerEmail = process.env.OWNER_EMAIL || "hello@localhostlimited.com";
+          const contactEmails = [
+            "hr@localhostlimitedafrica.com",
+            "info@localhostlimitedafrica.com"
+          ];
           await sendContactNotificationEmail(
             input.name,
             input.email,
             input.message,
-            ownerEmail
+            contactEmails
           );
 
           return {

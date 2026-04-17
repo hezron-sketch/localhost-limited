@@ -112,7 +112,7 @@ export async function sendContactNotificationEmail(
   name: string,
   email: string,
   message: string,
-  ownerEmail: string
+  ownerEmail: string | string[]
 ) {
   const html = `
     <!DOCTYPE html>
@@ -154,9 +154,17 @@ export async function sendContactNotificationEmail(
     </html>
   `;
 
-  return sendEmail({
-    to: ownerEmail,
-    subject: `New Contact: ${name}`,
-    html,
-  });
+  // Send to multiple emails if array is provided
+  const emailAddresses = Array.isArray(ownerEmail) ? ownerEmail : [ownerEmail];
+  
+  // Send to all email addresses
+  const emailPromises = emailAddresses.map(email => 
+    sendEmail({
+      to: email,
+      subject: `New Contact: ${name}`,
+      html,
+    })
+  );
+  
+  return Promise.all(emailPromises);
 }
