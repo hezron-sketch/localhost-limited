@@ -61,11 +61,11 @@ const coreValues = [
 ];
 
 const teamMembers = [
-  { name: "James Mwangi", role: "Chief Executive Officer", initials: "JM", dept: "Leadership" },
-  { name: "Grace Njeri", role: "Head of Brand Activation", initials: "GN", dept: "Marketing" },
+  { name: "Ethan Walker", role: "Chief Executive Officer", initials: "EW", dept: "Leadership" },
+  { name: "Anna Fredrick", role: "Senior Campaign Manager", initials: "AF", dept: "Marketing" },
+  { name: "Happiness Amani", role: "BTL & Experiential Lead", initials: "HA", dept: "Marketing" },
   { name: "Kevin Otieno", role: "Head of Field Execution", initials: "KO", dept: "Operations" },
   { name: "Fatuma Ali", role: "Partnerships & Retail Director", initials: "FA", dept: "Partnerships" },
-  { name: "Brian Kamau", role: "BTL & Experiential Lead", initials: "BK", dept: "Marketing" },
   { name: "Lydia Wanjiku", role: "Senior Campaign Manager", initials: "LW", dept: "Operations" },
 ];
 
