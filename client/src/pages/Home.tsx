@@ -133,7 +133,7 @@ export default function Home() {
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 animate-fade-in-up"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              Empowering Growth Business Growth
+              Empowering Business Growth
             </h1>
 
             {/* Subtext */}
