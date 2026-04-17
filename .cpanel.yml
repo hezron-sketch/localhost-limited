@@ -1,0 +1,52 @@
+---
+deployment:
+  targets:
+    public_html:
+      domain: localhostlimitedafrica.com
+      path: /public_html
+      publish_method:
+        - git
+        - ftp
+        - sftp
+
+tasks:
+  - export PASSENGER_NODEJS_VERSION=22
+  - export NODE_ENV=production
+  - npm install
+  - npm run build
+  - npm start
+
+post_deployment:
+  restart_passenger: true
+
+environment:
+  - NODE_ENV: production
+  - PORT: 3077
+  - DATABASE_URL: postgresql://localho1:PASSWORD@localhost:5432/localho1_localhost_limited
+  - JWT_SECRET: your-production-jwt-secret-key
+  - VITE_APP_ID: your-production-app-id
+  - OAUTH_SERVER_URL: https://localhostlimitedafrica.com
+  - VITE_OAUTH_PORTAL_URL: https://localhostlimitedafrica.com
+  - OWNER_EMAIL: admin@localhostlimitedafrica.com
+  - OWNER_NAME: Admin User
+  - OWNER_OPEN_ID: your-owner-open-id
+  - RESEND_API_KEY: your-resend-api-key
+  - SMTP_HOST: smtp.resend.com
+  - SMTP_PORT: 587
+  - SMTP_USER: resend
+  - SMTP_PASSWORD: your-resend-api-key
+  - SMTP_FROM_EMAIL: noreply@localhostlimitedafrica.com
+  - SMTP_REPLY_TO: hr@localhostlimitedafrica.com
+  - BUILT_IN_FORGE_API_URL: https://localhostlimitedafrica.com
+  - BUILT_IN_FORGE_API_KEY: your-forge-api-key
+  - VITE_FRONTEND_FORGE_API_URL: https://localhostlimitedafrica.com
+  - VITE_FRONTEND_FORGE_API_KEY: your-frontend-forge-api-key
+  - VITE_APP_TITLE: Localhost Limited
+  - VITE_APP_LOGO: https://your-cdn-url/logo.png
+
+hooks:
+  pre_deployment:
+    - npm run format
+    - npm test
+  post_deployment:
+    - npm run db:push
