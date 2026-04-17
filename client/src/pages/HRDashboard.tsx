@@ -36,18 +36,24 @@ export default function HRDashboard() {
     benefits: "",
   });
 
-  // Fetch data
-  const { data: jobsData, refetch: refetchJobs } = trpc.cms.jobs.list.useQuery({ limit: 100, offset: 0 });
+  // Fetch data - only when user is authenticated and is admin
+  const { data: jobsData, refetch: refetchJobs } = trpc.cms.jobs.list.useQuery(
+    { limit: 100, offset: 0 },
+    { enabled: !!user && user.role === "admin" }
+  );
   const jobs = jobsData?.jobs || [];
 
-  // Fetch applications
-  const { data: applicationsData } = trpc.cms.applications.list.useQuery({ limit: 1000, offset: 0 });
+  // Fetch applications - only when user is authenticated and is admin
+  const { data: applicationsData } = trpc.cms.applications.list.useQuery(
+    { limit: 1000, offset: 0 },
+    { enabled: !!user && user.role === "admin" }
+  );
   const allApplications = applicationsData?.applications || [];
 
   // Create job mutation
   const createJobMutation = trpc.cms.jobs.create.useMutation({
     onSuccess: () => {
-      refetchJobs();
+      if (refetchJobs) refetchJobs();
       setShowNewJobModal(false);
       setFormData({
         title: "",
@@ -65,7 +71,7 @@ export default function HRDashboard() {
   // Delete job mutation
   const deleteJobMutation = trpc.cms.jobs.delete.useMutation({
     onSuccess: () => {
-      refetchJobs();
+      if (refetchJobs) refetchJobs();
     },
   });
 

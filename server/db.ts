@@ -330,13 +330,12 @@ export async function createBlogPost(data: InsertBlogPost) {
   return db.insert(blogPosts).values(data);
 }
 
-export async function listBlogPosts(limit: number = 50, offset: number = 0, category?: string) {
+export async function listBlogPosts(limit: number = 50, offset: number = 0) {
   const db = await getDb();
   if (!db) return { posts: [], total: 0 };
-  const whereConditions = category ? and(eq(blogPosts.status, "published"), eq(blogPosts.category, category as any)) : eq(blogPosts.status, "published");
   const [posts, countResult] = await Promise.all([
-    db.select().from(blogPosts).where(whereConditions).orderBy(desc(blogPosts.publishedAt)).limit(limit).offset(offset),
-    db.select({ count: db.$count(blogPosts) }).from(blogPosts).where(whereConditions),
+    db.select().from(blogPosts).where(eq(blogPosts.status, "published")).orderBy(desc(blogPosts.publishedAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(blogPosts) }).from(blogPosts).where(eq(blogPosts.status, "published")),
   ]);
   return { posts, total: countResult[0]?.count || 0 };
 }
@@ -344,7 +343,7 @@ export async function listBlogPosts(limit: number = 50, offset: number = 0, cate
 export async function getBlogPostBySlug(slug: string) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(blogPosts).where(and(eq(blogPosts.slug, slug), eq(blogPosts.status, "published"))).limit(1);
+  const result = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
   return result[0];
 }
 
@@ -407,11 +406,24 @@ export async function createGalleryImage(data: InsertGalleryImage) {
   return db.insert(galleryImages).values(data);
 }
 
-export async function listGalleryImages(section?: string) {
+export async function listGalleryImages(section?: string, limit: number = 50, offset: number = 0) {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return { images: [], total: 0 };
+  
   const whereConditions = section ? eq(galleryImages.section, section as any) : undefined;
-  return db.select().from(galleryImages).where(whereConditions).orderBy(desc(galleryImages.createdAt));
+  
+  const [images, countResult] = await Promise.all([
+    db.select().from(galleryImages).where(whereConditions).orderBy(desc(galleryImages.createdAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(galleryImages) }).from(galleryImages).where(whereConditions),
+  ]);
+  return { images, total: countResult[0]?.count || 0 };
+}
+
+export async function getGalleryImageById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(galleryImages).where(eq(galleryImages.id, id)).limit(1);
+  return result[0];
 }
 
 export async function deleteGalleryImage(id: number) {
@@ -422,65 +434,34 @@ export async function deleteGalleryImage(id: number) {
 }
 
 // ============ Job Applications ============
-export async function createJobApplication(data: InsertJobApplication): Promise<JobApplication> {
+export async function createJobApplication(data: InsertJobApplication) {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
-  
-  // Check for duplicate application (same email for same job)
-  const existing = await db.select().from(jobApplications)
-    .where(
-      and(
-        eq(jobApplications.jobId, data.jobId),
-        eq(jobApplications.email, data.email)
-      )
-    );
-  
-  if (existing.length > 0) {
-    throw new Error("You have already applied for this position. Please wait for our response.");
-  }
-  
-  const result = await db.insert(jobApplications).values(data);
-  const id = result[0].insertId as number;
-  return getJobApplicationById(id) as Promise<JobApplication>;
+  return db.insert(jobApplications).values(data);
 }
 
-export async function getJobApplicationById(id: number): Promise<JobApplication | null> {
-  const db = await getDb();
-  if (!db) return null;
-  const result = await db.select().from(jobApplications).where(eq(jobApplications.id, id));
-  return result[0] || null;
-}
-
-export async function listJobApplications(limit: number = 50, offset: number = 0, jobId?: number, status?: string) {
+export async function listJobApplications(limit: number = 50, offset: number = 0) {
   const db = await getDb();
   if (!db) return { applications: [], total: 0 };
-  
-  let query = db.select().from(jobApplications);
-  
-  if (jobId) {
-    query = query.where(eq(jobApplications.jobId, jobId)) as any;
-  }
-  
-  if (status) {
-    query = query.where(eq(jobApplications.status, status as any)) as any;
-  }
-  
-  const applications = await query.orderBy(desc(jobApplications.appliedAt)).limit(limit).offset(offset);
-  
-  // Get total count
-  let countQuery = db.select().from(jobApplications);
-  if (jobId) countQuery = countQuery.where(eq(jobApplications.jobId, jobId)) as any;
-  if (status) countQuery = countQuery.where(eq(jobApplications.status, status as any)) as any;
-  const countResult = await countQuery;
-  
-  return { applications, total: countResult.length };
+  const [applications, countResult] = await Promise.all([
+    db.select().from(jobApplications).orderBy(desc(jobApplications.appliedAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(jobApplications) }).from(jobApplications),
+  ]);
+  return { applications, total: countResult[0]?.count || 0 };
 }
 
-export async function updateJobApplicationStatus(id: number, status: string) {
+export async function getJobApplicationById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(jobApplications).where(eq(jobApplications.id, id)).limit(1);
+  return result[0];
+}
+
+export async function updateJobApplicationStatus(id: number, status: "pending" | "reviewed" | "accepted" | "rejected") {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
-  await db.update(jobApplications).set({ status: status as any }).where(eq(jobApplications.id, id));
-  return getJobApplicationById(id);
+  await db.update(jobApplications).set({ status, updatedAt: new Date() }).where(eq(jobApplications.id, id));
+  return { success: true };
 }
 
 export async function deleteJobApplication(id: number) {
@@ -489,5 +470,3 @@ export async function deleteJobApplication(id: number) {
   await db.delete(jobApplications).where(eq(jobApplications.id, id));
   return { success: true };
 }
-
-// TODO: add additional feature queries as needed

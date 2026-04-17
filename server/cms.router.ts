@@ -218,7 +218,7 @@ export const jobApplicationsRouter = router({
       limit: z.number().default(50), 
       offset: z.number().default(0) 
     }))
-    .query(async ({ input }) => listJobApplications(input.limit, input.offset, input.jobId, input.status)),
+    .query(async ({ input }) => listJobApplications(input.limit, input.offset)),
 
   create: publicProcedure
     .input(z.object({

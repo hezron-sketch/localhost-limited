@@ -7,7 +7,7 @@
  * - Access submissions dashboard
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
@@ -28,6 +28,13 @@ export default function AdminPanel() {
   const [, navigate] = useLocation();
   const [showUserList, setShowUserList] = useState(false);
 
+  // Use useEffect to handle navigation when user is not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/admin/login");
+    }
+  }, [user, authLoading, navigate]);
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-[#0D1B2A] flex items-center justify-center">
@@ -37,7 +44,6 @@ export default function AdminPanel() {
   }
 
   if (!user) {
-    navigate("/admin/login");
     return null;
   }
 

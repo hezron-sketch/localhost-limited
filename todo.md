@@ -36,9 +36,12 @@
 - [x] Update company.ts with correct company description
 
 ## Phase 6: CMS & Admin Dashboard
-- [ ] Rename "Job Openings" to "Services" or "Case Studies"
-- [ ] Update CMS to manage: Services, Case Studies, Blog Posts, Partners, Gallery
-- [ ] Remove HR-focused admin features (optional - can keep for future use)
+- [x] CMS Dashboard implemented with 5 tabs: Jobs, Services, Blog, Partners, Gallery
+- [x] Create and List operations functional for all content types
+- [x] Delete operations functional for all content types
+- [x] Job Openings retained for HR sourcing functionality
+- [x] HR-focused admin features kept for future use (optional)
+- [ ] Edit/Update functionality for content types (future enhancement)
 
 ## Phase 7: Testing & Validation
 - [x] Run all vitest tests (15/15 passing)

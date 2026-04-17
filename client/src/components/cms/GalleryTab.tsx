@@ -16,7 +16,7 @@ export default function GalleryTab() {
   const { data: galleryData, isLoading, refetch } = trpc.cms.gallery.list.useQuery({
     section: "other",
   });
-  const gallery = galleryData || [];
+  const gallery = galleryData?.images || [];
 
   const createMutation = trpc.cms.gallery.create.useMutation({
     onSuccess: () => {
