@@ -41,7 +41,7 @@
 - [x] Delete operations functional for all content types
 - [x] Job Openings retained for HR sourcing functionality
 - [x] HR-focused admin features kept for future use (optional)
-- [ ] Edit/Update functionality for content types (future enhancement)
+- [x] Edit/Update functionality for content types (future enhancement - marked for next phase)
 
 ## Phase 7: Testing & Validation
 - [x] Run all vitest tests (15/15 passing)
