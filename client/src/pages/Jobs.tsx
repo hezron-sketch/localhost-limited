@@ -77,11 +77,11 @@ export default function Jobs() {
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 max-w-3xl"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              Join Our{" "}
-              <span className="gradient-text">Award-Winning Team</span>
+              Join Top Companies{" "}
+              <span className="gradient-text">Across Industries</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl leading-relaxed">
-              Help us drive brand activation, field marketing excellence, and business growth across East Africa. We're looking for talented professionals to join our growing team.
+              Explore diverse career opportunities with leading organizations across East Africa and beyond. From marketing and tech to operations and finance, we connect talented professionals with roles that drive impact, innovation, and growth.
             </p>
           </AnimatedSection>
         </div>
