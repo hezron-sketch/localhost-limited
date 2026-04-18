@@ -184,6 +184,90 @@ const organizationalServices = [
       "Post-event reporting",
     ],
   },
+  {
+    icon: Lightbulb,
+    title: "Grant Writing & Proposal Development",
+    description: "Compelling, high-conversion funding proposals tailored to international donors, foundations, and institutional partners.",
+    benefits: [
+      "Donor proposal development",
+      "Grant writing expertise",
+      "Foundation targeting",
+      "Institutional partnership proposals",
+      "Funding strategy",
+    ],
+  },
+  {
+    icon: TrendingUp,
+    title: "Digital Fundraising & Campaign Management",
+    description: "Design and execution of online fundraising campaigns with social media strategy and donor conversion funnels.",
+    benefits: [
+      "Fundraising campaign design",
+      "Social media strategy",
+      "Donor storytelling",
+      "Conversion funnel optimization",
+      "Campaign analytics",
+    ],
+  },
+  {
+    icon: Users,
+    title: "Stakeholder & Partnership Development",
+    description: "Identification and onboarding of strategic partners including corporates, government bodies, and international NGOs.",
+    benefits: [
+      "Stakeholder identification",
+      "Partner onboarding",
+      "Government relations",
+      "NGO partnerships",
+      "Network expansion",
+    ],
+  },
+  {
+    icon: BarChart2,
+    title: "Impact Measurement & Reporting Systems",
+    description: "Implementation of structured frameworks to track, measure, and communicate program impact to donors and stakeholders.",
+    benefits: [
+      "Impact framework design",
+      "Performance tracking",
+      "Donor reporting",
+      "Impact communication",
+      "Outcome measurement",
+    ],
+  },
+  {
+    icon: Briefcase,
+    title: "Capacity Building & Staff Training",
+    description: "Training programs for your team in donor relations, project management, communication, and digital tools.",
+    benefits: [
+      "Donor relations training",
+      "Project management workshops",
+      "Communication skills",
+      "Digital tools training",
+      "Team development programs",
+    ],
+  },
+  {
+    icon: Sparkles,
+    title: "Public Relations & Media Engagement",
+    description: "Strengthen your public image through media placements, press releases, and strategic storytelling.",
+    benefits: [
+      "Media relations",
+      "Press release distribution",
+      "Strategic storytelling",
+      "Visibility enhancement",
+      "Credibility building",
+    ],
+  },
+  {
+    icon: Zap,
+    title: "Operational Efficiency & Process Optimization",
+    description: "Review and improvement of internal workflows to reduce costs, improve execution speed, and enhance accountability.",
+    benefits: [
+      "Workflow optimization",
+      "Cost reduction",
+      "Process improvement",
+      "Execution speed enhancement",
+      "Accountability systems",
+    ],
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -193,23 +277,23 @@ const organizationalServices = [
 const strategySteps = [
   {
     number: "01",
-    title: "Market Insight",
-    description: "We begin by understanding your market, competitors, and target audience through comprehensive research and analysis.",
+    title: "In-depth Assessment",
+    description: "We begin by understanding your organization, market, and strategic objectives through comprehensive research and analysis.",
   },
   {
     number: "02",
-    title: "Strategic Planning",
-    description: "We develop a tailored strategy that aligns with your business goals and market opportunities.",
+    title: "Customized Strategy",
+    description: "We develop tailored strategies that align with your business goals, organizational capacity, and market opportunities.",
   },
   {
     number: "03",
-    title: "Field Execution",
-    description: "Our experienced teams execute campaigns with precision and excellence across all touchpoints.",
+    title: "Hands-on Implementation",
+    description: "Our experienced teams execute strategies with precision and excellence across all touchpoints and departments.",
   },
   {
     number: "04",
-    title: "Performance Monitoring",
-    description: "We continuously track results and optimize campaigns to ensure maximum ROI and impact.",
+    title: "Continuous Monitoring",
+    description: "We continuously track results, gather real-time insights, and optimize strategies to ensure maximum impact and ROI.",
   },
 ];
 
@@ -217,7 +301,7 @@ export default function Services() {
   return (
     <PageLayout
       title="Services"
-      description="Comprehensive marketing, HR sourcing, and organizational services designed to drive growth and excellence."
+      description="Comprehensive marketing, HR sourcing, organizational development, and donor assistance services designed to drive growth and excellence."
     >
       {/* ─── Hero ─── */}
       <section className="relative pt-32 pb-20 overflow-hidden" aria-label="Services page hero">
@@ -230,7 +314,7 @@ export default function Services() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/70 via-[#0D1B2A]/85 to-[#0D1B2A]" />
         <div className="container mx-auto relative z-10">
           <AnimatedSection>
-            <p className="section-label mb-3">What We Offer</p>
+            <p className="section-label mb-3">Strategic Services</p>
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 max-w-3xl"
               style={{ fontFamily: "'Syne', sans-serif" }}
@@ -238,7 +322,7 @@ export default function Services() {
               Comprehensive Solutions for <span className="gradient-text">Business Growth</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl leading-relaxed">
-              From brand activation to talent acquisition, we provide end-to-end solutions across marketing, HR, and organizational services.
+              From brand activation to talent acquisition, we provide end-to-end solutions across marketing, HR, organizational development, and strategic donor assistance.
             </p>
           </AnimatedSection>
         </div>
@@ -266,7 +350,7 @@ export default function Services() {
           </AnimatedSection>
 
           <ScrollRevealGroup>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {marketingServices.map((service, index) => (
                 <ScrollReveal key={index} delay={index * 0.1}>
                   <ServiceCard {...service} />
@@ -299,7 +383,7 @@ export default function Services() {
           </AnimatedSection>
 
           <ScrollRevealGroup>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {hrServices.map((service, index) => (
                 <ScrollReveal key={index} delay={index * 0.1}>
                   <ServiceCard {...service} />
@@ -332,7 +416,7 @@ export default function Services() {
           </AnimatedSection>
 
           <ScrollRevealGroup>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-5xl">
               {organizationalServices.map((service, index) => (
                 <ScrollReveal key={index} delay={index * 0.1}>
                   <ServiceCard {...service} />
@@ -362,7 +446,7 @@ export default function Services() {
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {strategySteps.map((step, index) => (
               <ScrollReveal key={index} delay={index * 0.15}>
                 <div className="p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-[#22C55E]/50 transition-all duration-300">
