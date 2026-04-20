@@ -14,36 +14,48 @@ export function registerOAuthRoutes(app: Express) {
     const code = getQueryParam(req, "code");
     const state = getQueryParam(req, "state");
 
-    if (!code || !state) {
-      res.status(400).json({ error: "code and state are required" });
+    if (!code) {
+      res.status(400).json({ error: "Authorization code is required" });
       return;
     }
 
     try {
-      const tokenResponse = await sdk.exchangeCodeForToken(code, state);
-      const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+      // Exchange authorization code for tokens
+      const tokenResponse = await sdk.exchangeCodeForToken(code);
+      
+      // Get user info from Google using access token
+      const userInfo = await sdk.getUserInfo(tokenResponse.access_token);
 
-      if (!userInfo.openId) {
-        res.status(400).json({ error: "openId missing from user info" });
+      if (!userInfo.sub) {
+        res.status(400).json({ error: "Failed to get user ID from Google" });
         return;
       }
 
+      // Upsert user in database
       await db.upsertUser({
-        openId: userInfo.openId,
+        googleId: userInfo.sub,
         name: userInfo.name || null,
-        email: userInfo.email ?? null,
-        loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
+        email: userInfo.email || null,
+        picture: userInfo.picture || null,
+        loginMethod: "google",
         lastSignedIn: new Date(),
       });
 
-      const sessionToken = await sdk.createSessionToken(userInfo.openId, {
-        name: userInfo.name || "",
-        expiresInMs: ONE_YEAR_MS,
-      });
+      // Create session token
+      const sessionToken = await sdk.createSessionToken(
+        userInfo.sub,
+        userInfo.email,
+        {
+          name: userInfo.name || "",
+          expiresInMs: ONE_YEAR_MS,
+        }
+      );
 
+      // Set session cookie
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
+      // Redirect to home page
       res.redirect(302, "/");
     } catch (error) {
       console.error("[OAuth] Callback failed", error);

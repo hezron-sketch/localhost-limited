@@ -27,7 +27,7 @@ import {
   deleteGalleryImage,
   createJobApplication,
   listJobApplications,
-  updateJobApplicationStatus,
+  updateJobApplication,
   deleteJobApplication,
 } from "./db";
 
@@ -273,7 +273,7 @@ export const jobApplicationsRouter = router({
       id: z.number(),
       status: z.enum(["pending", "reviewed", "accepted", "rejected"]),
     }))
-    .mutation(async ({ input }) => updateJobApplicationStatus(input.id, input.status)),
+    .mutation(async ({ input }) => updateJobApplication(input.id, { status: input.status })),
 
   delete: adminProcedure
     .input(z.object({ id: z.number() }))

@@ -1,26 +1,30 @@
 import { and, eq, desc } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { InsertUser, users, contactSubmissions, InsertContactSubmission, ContactSubmission, jobOpenings, InsertJobOpening, JobOpening, marketingServices, InsertMarketingService, MarketingService, blogPosts, InsertBlogPost, BlogPost, organizationPartners, InsertOrganizationPartner, OrganizationPartner, galleryImages, InsertGalleryImage, GalleryImage, jobApplications, InsertJobApplication, JobApplication } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
+let _client: postgres.Sql | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      _client = postgres(process.env.DATABASE_URL);
+      _db = drizzle(_client);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
+      _client = null;
     }
   }
   return _db;
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
-  if (!user.openId) {
-    throw new Error("User openId is required for upsert");
+  if (!user.googleId) {
+    throw new Error("User googleId is required for upsert");
   }
 
   const db = await getDb();
@@ -30,61 +34,63 @@ export async function upsertUser(user: InsertUser): Promise<void> {
   }
 
   try {
-    const values: InsertUser = {
-      openId: user.openId,
-    };
-    const updateSet: Record<string, unknown> = {};
-
-    const textFields = ["name", "email", "loginMethod"] as const;
-    type TextField = (typeof textFields)[number];
-
-    const assignNullable = (field: TextField) => {
-      const value = user[field];
-      if (value === undefined) return;
-      const normalized = value ?? null;
-      values[field] = normalized;
-      updateSet[field] = normalized;
-    };
-
-    textFields.forEach(assignNullable);
-
-    if (user.lastSignedIn !== undefined) {
-      values.lastSignedIn = user.lastSignedIn;
-      updateSet.lastSignedIn = user.lastSignedIn;
+    // Check if user exists
+    const existing = await db.select().from(users).where(eq(users.googleId, user.googleId)).limit(1);
+    
+    if (existing.length > 0) {
+      // Update existing user
+      const updateSet: Record<string, unknown> = {};
+      
+      if (user.name !== undefined) updateSet.name = user.name;
+      if (user.email !== undefined) updateSet.email = user.email;
+      if (user.picture !== undefined) updateSet.picture = user.picture;
+      if (user.loginMethod !== undefined) updateSet.loginMethod = user.loginMethod;
+      if (user.lastSignedIn !== undefined) updateSet.lastSignedIn = user.lastSignedIn;
+      if (user.role !== undefined) updateSet.role = user.role;
+      
+      updateSet.updatedAt = new Date();
+      
+      await db.update(users).set(updateSet).where(eq(users.googleId, user.googleId));
+    } else {
+      // Insert new user
+      const values: InsertUser = {
+        googleId: user.googleId,
+        name: user.name || null,
+        email: user.email || null,
+        picture: user.picture || null,
+        loginMethod: user.loginMethod || "google",
+        role: user.role || "user",
+        lastSignedIn: user.lastSignedIn || new Date(),
+      };
+      
+      await db.insert(users).values(values);
     }
-    if (user.role !== undefined) {
-      values.role = user.role;
-      updateSet.role = user.role;
-    } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
-      updateSet.role = 'admin';
-    }
-
-    if (!values.lastSignedIn) {
-      values.lastSignedIn = new Date();
-    }
-
-    if (Object.keys(updateSet).length === 0) {
-      updateSet.lastSignedIn = new Date();
-    }
-
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
-      set: updateSet,
-    });
   } catch (error) {
     console.error("[Database] Failed to upsert user:", error);
     throw error;
   }
 }
 
-export async function getUserByOpenId(openId: string) {
+export async function getUserByGoogleId(googleId: string) {
   const db = await getDb();
   if (!db) {
     console.warn("[Database] Cannot get user: database not available");
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const result = await db.select().from(users).where(eq(users.googleId, googleId)).limit(1);
+
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
 
   return result.length > 0 ? result[0] : undefined;
 }
@@ -319,6 +325,7 @@ export async function updateMarketingService(id: number, data: Partial<InsertMar
 export async function deleteMarketingService(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
+  
   await db.delete(marketingServices).where(eq(marketingServices.id, id));
   return { success: true };
 }
@@ -410,11 +417,10 @@ export async function listGalleryImages(section?: string, limit: number = 50, of
   const db = await getDb();
   if (!db) return { images: [], total: 0 };
   
-  const whereConditions = section ? eq(galleryImages.section, section as any) : undefined;
-  
+  const whereCondition = section ? eq(galleryImages.section, section as any) : undefined;
   const [images, countResult] = await Promise.all([
-    db.select().from(galleryImages).where(whereConditions).orderBy(desc(galleryImages.createdAt)).limit(limit).offset(offset),
-    db.select({ count: db.$count(galleryImages) }).from(galleryImages).where(whereConditions),
+    db.select().from(galleryImages).where(whereCondition).orderBy(desc(galleryImages.createdAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(galleryImages) }).from(galleryImages).where(whereCondition),
   ]);
   return { images, total: countResult[0]?.count || 0 };
 }
@@ -424,6 +430,13 @@ export async function getGalleryImageById(id: number) {
   if (!db) return undefined;
   const result = await db.select().from(galleryImages).where(eq(galleryImages.id, id)).limit(1);
   return result[0];
+}
+
+export async function updateGalleryImage(id: number, data: Partial<InsertGalleryImage>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+  await db.update(galleryImages).set(data).where(eq(galleryImages.id, id));
+  return { success: true };
 }
 
 export async function deleteGalleryImage(id: number) {
@@ -440,12 +453,14 @@ export async function createJobApplication(data: InsertJobApplication) {
   return db.insert(jobApplications).values(data);
 }
 
-export async function listJobApplications(limit: number = 50, offset: number = 0) {
+export async function listJobApplications(limit: number = 50, offset: number = 0, jobId?: number) {
   const db = await getDb();
   if (!db) return { applications: [], total: 0 };
+  
+  const whereCondition = jobId ? eq(jobApplications.jobId, jobId) : undefined;
   const [applications, countResult] = await Promise.all([
-    db.select().from(jobApplications).orderBy(desc(jobApplications.appliedAt)).limit(limit).offset(offset),
-    db.select({ count: db.$count(jobApplications) }).from(jobApplications),
+    db.select().from(jobApplications).where(whereCondition).orderBy(desc(jobApplications.appliedAt)).limit(limit).offset(offset),
+    db.select({ count: db.$count(jobApplications) }).from(jobApplications).where(whereCondition),
   ]);
   return { applications, total: countResult[0]?.count || 0 };
 }
@@ -457,10 +472,10 @@ export async function getJobApplicationById(id: number) {
   return result[0];
 }
 
-export async function updateJobApplicationStatus(id: number, status: "pending" | "reviewed" | "accepted" | "rejected") {
+export async function updateJobApplication(id: number, data: Partial<InsertJobApplication>) {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
-  await db.update(jobApplications).set({ status, updatedAt: new Date() }).where(eq(jobApplications.id, id));
+  await db.update(jobApplications).set({ ...data, updatedAt: new Date() }).where(eq(jobApplications.id, id));
   return { success: true };
 }
 
@@ -469,4 +484,11 @@ export async function deleteJobApplication(id: number) {
   if (!db) throw new Error("Database connection failed");
   await db.delete(jobApplications).where(eq(jobApplications.id, id));
   return { success: true };
+}
+
+export async function getJobApplicationByJobAndEmail(jobId: number, email: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(jobApplications).where(and(eq(jobApplications.jobId, jobId), eq(jobApplications.email, email))).limit(1);
+  return result[0];
 }

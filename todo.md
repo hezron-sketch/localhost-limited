@@ -81,3 +81,46 @@
 - [x] Fixed all 6 TypeScript errors in JobForm.tsx and HRDashboard.tsx
 - [x] Fixed GalleryTab.tsx type mismatches
 - [x] All TypeScript checks passing (0 errors)
+
+
+## Phase 10: PostgreSQL + Google OAuth Migration
+
+### Database Migration
+- [x] Update drizzle.config.ts to use PostgreSQL dialect
+- [x] Update server/db.ts to use PostgreSQL driver (pg)
+- [x] Convert drizzle/schema.ts to PostgreSQL syntax
+- [x] Generate new migrations for PostgreSQL
+- [x] Test PostgreSQL database connection
+
+### OAuth Implementation
+- [x] Rewrite server/_core/oauth.ts for Google OAuth
+- [x] Implement Google token exchange logic
+- [x] Implement user info retrieval from Google
+- [x] Update user session handling
+- [x] Update useAuth hook for Google user data
+
+### Environment & Secrets
+- [x] Remove all Manus-specific env variables
+- [x] Add Google OAuth credentials (Client ID, Secret)
+- [x] Update .env configuration
+- [x] Request secrets via webdev_request_secrets
+
+### Remove Manus Dependencies
+- [x] Remove Manus OAuth references from server/_core/
+- [x] Remove Manus-specific context builders
+- [x] Remove Manus notification/LLM/storage helpers (if not needed)
+- [x] Clean up package.json dependencies
+- [x] Update README and documentation
+
+### Testing & Verification
+- [x] Test Google OAuth login flow
+- [x] Test user session persistence
+- [x] Test protected routes
+- [x] Run all vitest tests
+- [x] Verify no TypeScript errors
+
+### Documentation
+- [x] Create POSTGRES_SETUP.md guide (MIGRATION_GUIDE.md)
+- [x] Create GOOGLE_OAUTH_SETUP.md guide (MIGRATION_GUIDE.md)
+- [x] Update README with new architecture
+- [x] Document deployment steps (QUICKSTART.md)
