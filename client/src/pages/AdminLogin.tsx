@@ -1,6 +1,6 @@
 /**
  * Admin Login Page
- * Manus OAuth login for admin access
+ * Google OAuth login for admin access
  */
 
 import { useEffect } from "react";
@@ -71,7 +71,7 @@ export default function AdminLogin() {
                 className="w-full px-6 py-3 rounded-lg bg-[#22C55E] text-[#0D1B2A] font-bold text-lg hover:bg-[#1ea850] transition-all duration-200 flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl hover:shadow-[#22C55E]/20"
               >
                 <LogIn className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                Sign In with Manus
+                Sign In with Google
               </button>
 
               {/* Divider */}
@@ -84,7 +84,7 @@ export default function AdminLogin() {
               {/* Info Text */}
               <div className="space-y-3 text-sm text-white/60">
                 <p>
-                  <strong className="text-white">First time?</strong> Create a Manus account to get started.
+                  <strong className="text-white">First time?</strong> Sign in with your Google account to get started.
                 </p>
                 <p>
                   <strong className="text-white">Already have an account?</strong> Sign in above to access the admin dashboard.
@@ -96,7 +96,7 @@ export default function AdminLogin() {
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-white/10">
             <p className="text-center text-white/40 text-xs">
-              Protected by Manus OAuth • Your data is secure
+              Protected by Google OAuth • Your data is secure
             </p>
           </div>
         </div>
