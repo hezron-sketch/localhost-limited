@@ -14,6 +14,7 @@
     "db:seed": "node seed-db.mjs",
     "db:seed-house-help": "node seed-house-help-job.mjs",
     "add-job": "node add-job.mjs",
+    "add-service": "node add-service.mjs",
     "db:push": "drizzle-kit generate --config drizzle.config.ts && drizzle-kit migrate --config drizzle.config.ts"
   },
   "dependencies": {
