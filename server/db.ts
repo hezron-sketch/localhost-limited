@@ -245,7 +245,7 @@ export async function listJobOpenings(limit: number = 50, offset: number = 0) {
   if (!db) return { jobs: [], total: 0 };
   
   try {
-    // Fetch jobs with pagination - select only needed fields
+    // Fetch jobs with pagination - optimized to reduce query count
     const jobs = await db
       .select()
       .from(jobOpenings)
@@ -254,15 +254,24 @@ export async function listJobOpenings(limit: number = 50, offset: number = 0) {
       .limit(limit)
       .offset(offset);
     
-    // Get total count
-    const countResult = await db
-      .select({ count: db.$count(jobOpenings) })
-      .from(jobOpenings)
-      .where(eq(jobOpenings.status, "active"));
+    // If we got fewer results than the limit, we know the total
+    // Otherwise, we need to count (but only if there might be more)
+    let total = jobs.length;
+    if (jobs.length === limit) {
+      // Only count if we got a full page (might be more data)
+      const countResult = await db
+        .select({ count: db.$count(jobOpenings) })
+        .from(jobOpenings)
+        .where(eq(jobOpenings.status, "active"));
+      total = countResult[0]?.count || 0;
+    } else if (offset > 0) {
+      // If we're on a later page with fewer results, estimate total
+      total = offset + jobs.length;
+    }
     
     return { 
       jobs, 
-      total: countResult[0]?.count || 0 
+      total
     };
   } catch (error) {
     console.error("[DB] Error fetching jobs:", error);
