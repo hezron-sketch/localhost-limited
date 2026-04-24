@@ -1,4 +1,9 @@
 import { defineConfig } from "drizzle-kit";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -6,8 +11,8 @@ if (!connectionString) {
 }
 
 export default defineConfig({
-  schema: "./drizzle/schema.ts",
-  out: "./drizzle",
+  schema: path.join(__dirname, "drizzle/schema.ts"),
+  out: path.join(__dirname, "drizzle"),
   dialect: "postgresql",
   dbCredentials: {
     url: connectionString,
